@@ -1,0 +1,30 @@
+<p>home works!</p>
+<form action="" class="form-group">
+    <label for="inp">Enter any text</label>
+    <input type="text" name="inp" id="inp" class="form-control" #ref>
+</form>
+<button class="btn btn-success" (click)="senddata(ref.value)">send</button>
+<hr>
+<div class="container">
+    <button class="btn btn-info" (click)="getdata()">GetFormData</button>
+    <h1 class="text-success text-center display-3 text-decoration-underline">Registered Users</h1>
+  <table class="table table-bordered table-striped text-center">
+    <thead>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Dataofbirth</th>
+      <th>Gender</th>
+      <th>State</th>
+      <th>Address</th>
+    </thead>
+    <tr *ngFor="let user of data;let inx=index">
+      <td>{{user.username}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.dateofbirth}}</td>
+      <td>{{user.gender}}</td>
+      <td>{{user.state}}</td>
+      <td>{{user.address}}</td>
+
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,80 @@
+
+//ngform
+<div class="container">
+  <h1 class="text-dark display-2 text-decoration-underline text-center">User Registration Form</h1>
+  <form #userform="ngForm" > <!--(ngSubmit)="getUserData(userform)"-->
+    <div class="form-group">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" name="username" id="username" class="form-control" minlength="4" required #name="ngModel" ngModel >
+      <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
+        <span *ngIf="name.errors?.required">Name is required</span>>
+        <span *ngIf="name.errors?.minlength">Minlength is 4</span>>
+      </div>>
+    </div>
+    <div class="form-group">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" name="email" id="email" class="form-control" ngModel #email="ngModel" required email>
+      <div *ngIf="email.touched && email.invalid" class="text-danger">
+        <span *ngIf="email.errors?.required">*Email is required</span>
+        <span *ngIf="email.errors?.email">*Enter a valid email</span>
+      </div>>
+    </div>
+    <div class="form-group">
+      <label for="dob" class="form-label">Dateofbirth</label>
+      <input type="date" name="dateofbirth" id="dob" class="form-control" ngModel required #dob="ngModel">
+      <span *ngIf="dob.touched && dob.invalid" class="text-danger">*DOB is required</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Select gender</label>
+      <div class="form-check">
+          <input type="radio" name="gender" id="m" value="male" class="form-check-input" ngModel required #male="ngModel">
+          <label  class="form-check-label" for="m">Male</label>
+      </div>
+      <div class="form-check">
+          <input type="radio" name="gender" id="f" value="female" class="form-check-input" ngModel required #female="ngModel">  
+          <label  class="form-check-label" for="f">Female</label>
+      </div>
+      <span class="text-danger" *ngIf="(male.touched || female.touched) && (male.invalid && female.invalid)">*select a gender</span>
+    </div>
+    <div class="form-group">
+      <label for="state" class="form-label">Select State</label>
+      <select name="state" id="state" class="form-select custom-select" #select="ngModel" ngModel required [class.is-invalid]="select.invalid && select.touched">
+        <option value="telangana">Telangana</option>
+        <option value="ap">AP</option>
+        <option value="goa">Goa</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" name="password" id="address" class="form-control" ngModel appPasswordPattern required #password="ngModel">
+      <div class="text-danger" *ngIf="password.touched && password.invalid">
+        <span *ngIf="password.errors?.required">*password is required</span>
+        <span *ngIf="password.errors?.invalidPassword">*password must be atleast 8 characters</span>
+      </div>
+    </div>
+    <button class="btn btn-success d-block mx-auto mt-3" (click)=getUserData(userform) routerLink="/home" [disabled]="userform.invalid">Register</button>
+  </form>
+  <hr>
+  <!--
+  <h1 class="text-success text-center display-3 text-decoration-underline">Registered Users</h1>
+  <table class="table table-bordered table-striped text-center">
+    <thead>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Dataofbirth</th>
+      <th>Gender</th>
+      <th>State</th>
+      <th>Address</th>
+    </thead>
+    <tr *ngFor="let user of users;let inx=index">
+      <td>{{user.username}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.dataofbirth}}</td>
+      <td>{{user.gender}}</td>
+      <td>{{user.state}}</td>
+      <td>{{user.address}}</td>
+      <button class="btn btn-danger btn-sm" (click)="delobj(inx)">x</button>
+    </tr>
+  </table>
+</div>
+-->

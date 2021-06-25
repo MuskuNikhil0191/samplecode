@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Document</title>
+<script>
+let array = [0, 0, 0, 0, 0, 0];
+for (let index = 0; index < 6; index++)
+{
+array[index] = prompt("Enter " + index + " array Value", "0");
+}
+let evenArray = []; let oddArray = [];
+array.forEach(element =>
+{
+if (element % 2 == 0)
+{
+evenArray.push(element);
+}
+else
+{
+oddArray.push(element);
+}
+});
+document.write("The given array is " + array); 
+document.write("<br>Even array is " + evenArray); 
+document.write("<br>The odd array is " + oddArray);
+</script>
+</head>
+<body>

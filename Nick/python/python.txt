@@ -1,0 +1,390 @@
+﻿import sys
+n, m = map(int, sys.stdin.readline().strip().split())
+(n, k) = map(int, input().split())     sankar_o@vnrvjiet.in
+s = "-".join(alpha[i:n])
+L.append((s[::-1]+s[1:]).center(4*n-3, "-"))
+    print('\n'.join(L[:0:-1]+L))
+l[include:not include:step]//for middle2 reverse of l(1234) l[2:0:-1]
+data=''.join(format(ord(i),'b') for i in msg)//for convertin str to bin ord converts into ascii and format ascii to bin
+
+import random
+print(random.randrange(0,10))
+
+print('%.2f'%a)
+print('{:.2f'.format(a))
+print(round(a,2))
+print(divmod(a,b))//gives (quotient,rem)
+pow(a,b,m)//a power b %m
+global x
+x=11//
+
+a.strip()//removes spaces from front and back
+a.replace("a","b")
+a.split(",")
+a.partition("str")
+a.find("x")//returns position
+rfind,rsplit,rpartition,replace,count//take right most 
+p="substr" in||not in "str1"//returns true or false
+x="i am {:.2f} years old;age=12.222
+print(x.format(age))
+t=str.join(x)//x can be tuple,dict
+
+list-duplicate,changable,ordered,indexed[]
+tuple-duplicate,unchangable,ordered,indexed(,)
+set-no duplicate,unordered,unindexed{}
+dictionery-no duplicate,unordered,indexed,changable(){}
+
+mylist = list(dict.fromkeys(mylist))
+list.append("str")//adds to last
+list.insert(2,"sweet")
+list.pop()//deletes last
+list.remove("str")
+del list(1)
+list.clear()//removes all items
+del list//deletes list
+list1=list.copy()
+list1=list(list)
+list3=list1+list2
+list1.extend(list2)
+list.reverse()
+list.sort()
+a=max(list)
+str=''.join(l)//converts list to string
+"".join(str(x) for x in l)//""
+str.rjust("length")//adds spaces at front
+str.ljust("length")//adds spaces at back
+str.center("length")//adds spaces at front and back
+' '.join([i.capitalize() for i in s])//for  capitalize each word in list and return as string
+print(any(i.isalnum() for i in s))//returns true if any one is true
+all -returns true if all is true
+'\n'.join(''.join(map(str,i)) for i in l))//for printing list of lists combinely seperated by line and map() is optional or
+for i in l:
+	print(*i,sep='')
+
+x=("str",)//some tuple
+y=list(x)//coverts to list
+x=tuple(y)
+x.index("str")//returns index
+x.count("str")//counts
+
+set.add("str")//adds single item
+set.update(["x","u"])||(set2)//adds multiple items
+set.remove("s")//if item not there raises error
+set.discard("s")//does not raise an error
+set.clear()
+delete set
+set3=set1.union(set2)
+set3=set1.difference(set2)
+set1.difference_update(set2)//removes unwanted items from set1
+intersection,intersection_update,isdisjoint,issubset,issuperset
+set3=set1.symmetric_difference(set2)//returns uncommon items from both sets
+symmetric_difference_update
+
+methods:
+getattr(object,attribute)//gives value
+setattr(object,attribute,value)//modifys value
+hasattr(obj,att)//returns true if exists
+delattr(obj,att)//del value
+dir(obj)//gives all methods,properties of obj
+bin(),hex(),oct()[2:],reversed(),sorted(),zip(),zfill(len)//fills with 0s',splitlines-splits into list of lines
+l=list(zip(l1,l2))//gives zip of 2 lists
+res=sorted(l)//sorts acc to first value
+res=sorted(l,key=lambda x:x[1])//sorts acc to second value
+
+command=input().split()[0]//command takes 1 value inputted
+getattr(a, command)(newSet)//means a.command(newset).,getarr(obj,key,default)//default gives if attribute not found
+name, *line = input().split()
+scores = list(map(float, line))
+student_marks[name] = scores     //for multiple scores
+key=p
+d.setdefault(key,[])
+d[key].append(s)
+for i in sorted(d)//sorts dict keys
+for i in sorted(d.values())//sort dict values
+for i in sorted(d.items(),key=lambda x:x[1])//sorts values or
+for i in sorted(d,key=d.get,reverse=True)
+	print(i,d[i])//sorts values in reverse and conviniet to print
+x=dict.get("key")||dict["key"]
+for i in dict:print(i)
+for i in dict.values():print(i)||for i in dict:print(dict[i])
+for x,u in dict.items():print(x,y)
+dict[key]="value"//for adding
+dict.update({"key":"value",...})
+dict.pop["key"]//for deleting
+del dict["key"]
+dict.popitem()//deltes last one
+x=dict.fromkeys(keys,values)//keys contains keys,value will be same for all
+x=dict.items()//display keys and values
+x=dict.values()//displays values
+
+print(a) if(a>b) else print(b) if(b>a) else print("equal")
+and,or keywords are used
+for x in range(0,2,6)//print with skippin one
+
+
+a,b=(int(input()),input().split())
+c,d=(int(input()),input().split())
+x=set(b)
+y=set(d)
+p=y.difference(x)
+q=x.difference(y)
+r=p.union(q)
+print ('\n'.join(sorted(r, key=int)))
+
+x=lamda a:a+10
+print(x(5))//15
+
+class c:
+	def _init_(self,name,age):
+		self.name=name
+		self.age=age
+	def fun(self):
+		print(self.name)
+	a=10
+obj=class("jon",33)
+print(obj.a)
+obj.fun()
+del obj
+del obj.age//for deleting
+class s(c)://inherits c class
+	def _init_(self,name,age):
+		super()._init_(self,name,age)
+ob1=s("joo",33)
+if __name__="__main__"://main method
+
+import module||import module mx
+module.fun()||mx.fun()
+
+import datetime
+x=datetime.datetime.now()
+print(x)
+print(x.strftime("%A"))//gives present day,w gives number of weekday
+%B//gives present month,m gives number of month
+x=datetime.datetime(2002,3,5)y,m,d
+print(x.strftime("%A"))//gives the day on above details and '%a' gives day as short
+p gives pm/am
+y gives year short,Y gives full year
+z gives timestamp
+from datetime import datetime
+date_obj=datetime.strptime(input,'%a %d %B %Y %H:%M:%S %z')//acc to input format
+import calendar
+c=calendar.weekday(y,m,d)//gives weekday num
+
+import json
+y=json.loads(x)//converts to python dict
+y=json.dumps(x)//converts to json
+y=json.dumps(x.indent=4)//for easy to read
+
+import re
+x=re.search("^start.*end$",str)//checks the start and end
+x=re.findall("substr",str)
+x=re.search("substr",str)-x.start(),x.end()//it stops searchig after found once
+x=re.split("substr||\s",str,maxsplit)
+x=re.sub("substr","replacestr",str)//for substituting
+re.match(r'^[-+]?[0-9]*\.[0-9]+$'//^-starting,?-checking =[0-9] or not,* for [0-9] 0 or more times,+ means [0-9] 1 or more times,$ reaches end,\. means dot char,any character means (.)
+m=re.match(r'(\w+)@(\w+)\.(\w+)',str)
+m.group(0)//gives entire match 1 gives 1st subgroup .....
+m.groups()//gives all subgroups
+m=re.match(r'(?p<user>\w+)@(?p<website>\w+)\.(?p<extension>\w+)',str)
+ptrn = re.compile("^[a-zA-Z][\w-]*@[a-zA-Z0-9]+\.[a-zA-Z]{1,3}$")
+m.groupdict()//gives above values in form of dict
+re.compile(ex)
+l=list(map(lambda x:x.group(),re.finditer(r'condition',input))
+r"(?<=[qwrtypsdfghjklzxcvbnm])+[aeiou]{2,}(?=[qwrtypsdfghjklzxcvbnm])+", re.IGNORECASE
+?<=['+consonants+'])(['+vowels+']{2,})(?=['+consonants+'])'
+l=list(map(lambda x:x.group(),re.finditer(r'(?<=[bcdfghklmnpqrstvwxyzBCDFGHKLMNPQRSTVWXYZ])+[aeiouAEIOU]{2,}(?=[bcdfghklmnpqrstvwxyzBCDFGHKLMNPQRSTVWXYZ])+',input())))
+re.sub(r'([\w\.-]+)@([\w\.-]+)', r'\1@yo-yo-dyne.com', str)//here \1  means group1 remains constant
+l=list(email.utils.parseaddr(input()))//gives name and email seperate
+email.utils.formataddr(l)//gives name <email> format
+'[789]\d{9}$'//mobileno
+thousand = 'M{0,3}'
+hundred = '(C[MD]|D?C{0,3})
+ten = '(X[CL]|L?X{0,3})'
+digit = '(I[VX]|V?I{0,3})'
+print (bool(re.match(thousand + hundred+ten+digit +'$', input())))
+(r"^[456]([\d]{15}|[\d]{3}(-[\d]{4}){3})$", s) and not re.search(r"([\d])\1\1\1", s.replace("-", ""))
+re.search(r'(a)\1', 'aa') # Good
+(\d)(?=\d\1)
+\A at start of sentence
+\b present at start or end \bain or ain\bw
+\d if any digit is present
+\s if any space is present
+\w if any a-z 0-9 _ is present
+\z at a=end of sentence 
+ capital letters are are opposite
+[str] compares any of str elemnt
+
+try: 
+except:
+finally:
+raise exception("")
+raise typeerror("")
+except Exception as e://Exception||BaseException
+	print("error:",e)
+
+from itertools import product
+axb=list(product(a,b))||l=[[a],[b]]-list(product(*l))
+from itertools import permutations||combinations||combinations_with_replacement
+l=list(permutation(list,length))
+from itertools import groupby
+for k,g in groupby(input()):
+	print("({}, {})".format(len(list(g)),k))//k is distinct value,g is list of consective k value
+112222=2,1 4,2
+
+from collections import Counter   \ordereddict,namedtuple
+d=counter(list)//gives distinct values as key and their num as value in form of dict
+print(*d.values())//for printing only values
+from collections import deque
+d=deque()
+getattr(d,inp[0])(inp[1]) if len(inp)>1//for append 2,appendleft 2
+getarrt(d,inp[0])()//for pop,popleft
+print(*d)//for printing values
+
+import cmath
+print(*cmath.polar(z),sep='\n')//polar coordinates of complex num z
+rect(r,phi) //gives complex num with given polar coordinates
+
+from numpy import prod
+prod(list)
+
+import math
+math.method()
+method:gcd,isqrt gives near sqrt num,log(x,base),perm(n,k),sin,acos,acosh,atan,tan,tanh,remainder,comb,factorial
+math.trunc()-eliminates all decimal part
+math.ceil()-prints least integer greater than given num
+math.floor()-prints greatest int smaller than given num
+x=math.atan2(a,b)
+math.degrees(x)
+'\N{degree sign}'//for degree sign||alt+0176or248 °
+for pi symbol-alt+227
+for square root-alt+251
+for square-alt+0178
+for cube-alt+0179
+
+
+from fractions import Fraction
+from functools import reduce
+	reduce(lambda x,y:x+y,[1,2,3])=6
+
+import roman
+ roman.fromRoman(x)
+
+f=open('name.txt')//to open a file
+print(f.read())//reads the content of file
+f.readline()//reads one line
+f=open('file','r')//opens in read mode 
+	for i in f:
+		print(i)//gives file content
+f=open('name.txt','x')//creates file 
+f=open('name.txt','w')//opens in write mode
+	f.write('content')
+f.close()//closes file
+import os
+os.remove('name.txt')//removes file
+os.rmdir('myfolder')//removes entire folder
+f.method()
+method:seek(3) changes file pos to 3,tell gives file position,writelines([],[]) writes lines in file,readable,seekable,writeable gives true or false
+
+import numpy or import numpy as np
+np._version_ gives version
+arr=np.array([1,23,3])
+l=arr.tolist()//for converting into list
+arr.ndim gives number of dimensions
+arr=np.array([2,3],ndim=3)//defines no of dimensions
+arr[0,1] gives 1st dimension 2nd element
+arr.dtype gives datatype
+arr=np.array([2,3],dtype='S')//gives string type,i,i4 gives integer with 4 bytes......
+newarr=astype(i)//gives copy of arr converting to int
+x=arr.copy()//gives copy
+arr.shape gives no of dimensions and no of elements in each dimension
+x=arr.reshape(2,4)//converts 1d arr to 2d with 4 ele
+x=arr.reshape(-1)//converts multidim arr to 1d arr or arr.flatten()
+x=arr.flatten()//multidim to onedim
+for i in np.nditer(arr):gives all n iterations and arr[:,::2] gives step iteration
+for i in np.nditer(arr,flags=['buffered'],op_dtypes=['S'])://converts each ele to string and stores in buffered
+for ind,i in np.ndenumerate(arr): gives index and value
+arr=np.concatenate((arr1,arr2),axis=1)//for 1d axis not required
+arr=np.hstack((arr1,arr2))//stacks along rows 1 2 3 4
+arr=np.vstack((arr1,arr2))//stacks along columns 1 2 \n 3 4
+arr=np.dstack((arr1,arr2))//stacks along height  1 3 \n 2 4 it is same as
+arr=np.stack((arr1,arr2),axis=1)
+newarr=np.array_split(arr,no of splits,axis) axis is optional
+the above axis=1 is same as hsplit opp of hstack
+//ly vstack for vsplit and dstack for dsplit
+np.where(condition)[0] gives tuple of indices of arr satisfies condition 
+b=np.where(a<5,a,a*10)//gives true arr from a and false arr*10 i.e,.condition creates an ar of true and false
+x=np.where(arr==4)||arr%2==0//gives the index
+x=np.searchsorted(arr,7,side=right)//gives the position where to be inserted to remain sorted from left side not required
+for multiple values replace 7 with [3,5,6]
+np.sort(arr) gives copy of arr with sorted
+newarr=arr[filterarry]//filter contains true or false acc to whether to present or not//filterarr=arr>42 gives values only >42
+arr=np.arrange(1,10,stepvalue(opitonal))//gives array of 1-9
+from numpy import random
+x=random.randint(100)//gives random from 100 integers
+x=random.randint(100,size=(5))//gives 5 random num from int
+x=random.randint(100,size=(3,5))//gives 2d arr 3 rows with 5 random int
+random.seed(3)
+print(random.random(1,1000))//always print same if seed value is same
+x=random.random((3,5))//gives 2d arr 3 rows with 5 random int
+x=random.rand(5)//gives 5 random  float num
+""            (3,5)//gives 2d arr 3 rows with 5 float num
+x=random.choice([ele's],size=((3|3,5)))
+x=np.zeros((n,m),int)//for array with nxm with zeroes
+x=np.full((n,m),number,dtype="int")//for array with nxm with number passed
+x=np.ones((n,m),int)
+
+numpy.transpose(arr)//gives transpose
+numpy.identity(k)//gives identity matrix of kxk
+numpy.eye(a,b,k=c)//gives matrix axb with c diagnol 1's remaining 0's if k=0 main diagnol k=1 upper 1st diagnol k=-1 lower 1st diagnol
+numpy.set_printoptions(sign=' ')
+floor-least int,ceil-greater int,rint-nearest int,around(num,no of decimal places to round),absolute()
+np.lcm(num1,num2) gives lcm and np.lcm.reduce(arr) gives lcm of arr and same for gcd
+np.sin(np.pi/2) gives angle,arcsin gives inverse,sinh gives hyperbolic,arcsinh gives inverse of hyperbolic
+np.unique(arr) gives unique ele of arr
+np.union1d(arr1,arr2)//gives union
+np.intersect1d(arr1,arr2,assume_unique=True),setdiff1d gives difference,setxor1d gives symmetri diff
+np.deg2rad(arr)//converts to radians and rad2deg converts radians to degrees
+np.hypot(base,perp)//gives hypotenuse
+np.diff(arr,n=2)//gives a,b-a,c-b next b-a-a,c-b-(b-a) since n=2
+numpy.sum(arr,axis=i) i=0 [3,5],i=1 [3][5],i=none 8 for [[1,2][2,3]] or sum([arr1,arr2])
+cumsum gives [a,a+b,a+b+c] arr,cumprod,prod,min,max,mean,var,std,dot,cross,inner,outer,roots,poly-polynomial,polyint-integral,polyval(a,val)-evaluate,polyfit,polyder-derivative
+numpy.linalg.det-determinant,eig gives a,b eigen vectors,inv multiplicative inverse of a matrix
+funname=np.frompyfunc(funname,no of i/p,no of o/p)//it develops fun in numpy remaining fun def,args are same as regular
+np.logx(arr)//x is base//for e no x
+for any log: 
+first import i.e.,from math import log
+nplog=np.frompyfunc(log,2,1)
+nplog(1000,37)//log 1000 with base 37
+
+from html.parser import HTMLParser
+class mine(HTMLParser):
+def handle_starttag(self,tag,attrs):gives start tag:tag and attrs:[(name,value)]
+def handle_endtag(self,tag):gives end tag:tag
+def handle_startendtag(self,tag,attrs):gives empty tag and attrs
+def handle_comment(self,data):gives comment
+def handle_data(self,data):gives data b/w start end tags
+def handle_decl(se;f,decl):gives doctype declaration
+entityref(self,name) gives &name type and charref(self,name) gives &#332 type
+parser=mine()
+parser.feed(input)
+
+import xml.etree.ElementTree as etree
+tree=etee.ElementTree(etree.fromstring(xml))//xml is input
+root=tree.getroot()//gives root
+root.attrib //gives dictionary of attributes and values
+for child in root:
+child.attrib//gives dictionary of attributes and values of children of root
+same for grandchildren
+x=tree.findall('link')
+y=x[i].find('link')
+return sum(len(child.attrib) for child in root.iter())//gives all no of all attributes present in xml
+
+import matplotlib
+import matplotlib.pyplot as plt
+plt.plot(x,ysin) where ysin=np.sin(x)
+plt.xlabel('x label')
+plt.ylabel('y label')
+
+
+
+

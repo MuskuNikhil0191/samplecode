@@ -1,0 +1,392 @@
+__JAVA----
+java is platform independent gosling's java
+Polymorphism-method overloading and method overriding
+Abstraction-abstract class and interface
+distributed-RMI:remote method invocation;EJB:enterprise java beans..internet programming
+jdk(java development kit) consists of jre(java runtime environment) and jvm(java virtual machine is platform dependent depends on os it is main)
+java compiler compiles into byte code
+jvm consists of jit(just intime compiler) interprets into machine code
+class-camelcaseback;method-camelcase
+
+java.lang for wrapper class which need not to be imported
+awt-for graphical user interface
+net-for networking
+for Applications Programming Interface(API):
+import java.io.*
+int a=Integer.parseInt()//parsing
+for datainputstream(deals with bytes) or buffer reader:
+psvm()throws Exception
+DataInputStream obj=new DataInputStream(System.in)
+name=obj.readLine()//for reading string
+for buffer:
+InputStreamReader isr=new InputStreamReader(Sytem.in)
+BufferedReader br=new BufferedReader(isr)
+name=br.readLine()
+score=Float.parseFloat(br.readline())//for reading float
+s=(char)br.read()//for reading single character in general read() reads int
+scannerobj.nextLine()//for removing buffer
+
+0xAAAAAAAA-gives 32 bit number with even bits as 1 and odd bits as 0
+x&0xAAAAAAAA-gives all even bits of x
+0x55555555-gives 32 bit number with odd bits as 1 and even bits as 0
+x&0x55555555-gives all odd bits of x
+5<<3 means 5*2power3 bitwise leftshift is used for power of 2
+1<<3-means 2 power 3
+n>>i&1//gives ith bit is set(1) or not
+^ gives 1 if both are diff else 0
+for swap 2 adjacent  bits:
+n=n^(1<<i)
+n=n^(1<<i+1)
+n=log2(num)+1//gives no of bits in a num
+for i in range(n):n^(1<<i) //for inverting bits of a num 
+i&(1<<j)//gives bits of i set or not where j(0<31)
+
+double d=i//for converting int i to double implicit typecasting
+int i=(int)d//converting double to int explicit typecasting
+c=(a>b)?a:b//if true c=a else c=b conditional operator(ternary)
+new classname().method()//for calling fun different way
+instanceof gives where variable belongs//if obj instanceof classname returns true or false
+
+while(true)//for infinite loop
+System.out.printf("%15s %04d",name,no)//
+%15s for filing string with left spaces-right justify
+%-15s fills string with rightspaces-left justify
+%04d fills 4-digit integr with 0's front//0222
+%4d fills with white spaces at front of 4 digit int// 222.
+import java.lang.Math;
+Math.pow(a,b)//for power
+import java.text.NumberFormat;
+CURRENCY FORMATTER:
+Locale indialLocale=new Locale("en","IN")//creating locale for india other countries already defined
+NumberFormat countryname(as our wish)=NumberFormat.getCurrencyInstance(Locale.COUNTRYNAME IN CAPS);//for (indiaLocale) as we created
+countryname.format(input)//for printting in the way ex:$333 
+import java.time.LocalDate;
+LocalDate.of(year,month,day).getDayOfWeek().name()//gives day for the given date
+for checking primeno:
+Scanner in=new Scanner(System.in)
+BigInteger n=in.nextBigInteger(); or BigInteger n=new BigInteger(in.next())
+sop((n.isProbablePrime(1))?prime:not Prime)
+s=a.add(b)//gives sum of 2 bigintegers and stores in biginteger s
+p=a.multiply(b)//gives product
+for decimals BigDecimal
+
+only after enabling assertion assertion statements are shown
+java -ea classname
+assert true:will not be displayed 
+try{assert false:"messsage"}
+catch(AssertionError e)
+sop(e.getmessage())
+getmessage gives what we wrote
+printStackTrace() gives error with what we pass
+
+ascii value of ' '-32 A-65 a-97//diff is 32 i.e., lower-32 gives upper
+int a[]=new int[size] or {n1,n2,....}
+sop(Arrays.toString(a))//for printing arr []
+sop(Arrays.deepToString(a))//for printing 2d arr[][]
+a.length//gives length of array
+a[i].length//gives lenth of columns in 2d array
+String s=Integer.toString(n)//converts int n to string ||String s=""+n
+Arrays.toString(arr)//converts int arr to str arr
+s.length()//gives length of string s
+String s[]=s1.split(" ")//splits the sentence
+s.charAt(pos)//gives character at pos from string s
+s1.indexOf('x')//gives index of x
+s1.indexOf('x',n)//gives index of x after the n position
+s.lastindexOf('character')//gives last index of char from string s 
+s.concat(s1)//adds 2 strings
+s1.compareTo(s2)//gives +ve if s1>s2 -ve if s1<s2 0 if s1==s2(compares ascii values)
+Character.compare(ch1,ch2)//comparing characters return 0 if equals <0 if ch1<ch2 ....
+s1=s.toUpperCase()//lower to upper case and viceversa
+s1=s.replace('x','y')//replace x with y
+s1=s.trim()//removes white spaces
+s1.equals(s2) returns true or false
+s1.startsWith('char')//returns true or false also for endsWith
+s1.substring(startpos,endpos)//substring from start to end(notincludes)
+if end is not not mentioned then from start to end
+s1.equalsIgnoreCase(s2)//returns true or false ignoring case
+String s1=new String(s,startindex,length)//to copy strings
+char c[]={'a','b','c'} to String s=new String(c,startindex,length)
+String s="java" to Char c[]=s.toCharArray()
+for converting every char from str to its asciivalue
+byte b[]=new byte(s.length())//declare bytearray
+s.getBytes(0(startpos of s),s.length(),b(bytearray),0(startpos of bytearray))
+(char)b[pos]//gives char of ascii value
+s.getChars(startpos of string,length of string,characterarray,chararray startpos)//gives character array of reqired from string
+Character.isDigit(ch[i])//returns true or false
+isUpperCase,isLowerCase,isLetter,isWhitespace
+import java.util.Arrays;
+Arrays.sort(characterarray)//for sorting
+System.arraycopy(newarr,0,n,0,a.length)
+
+stringbuffer class-changable/mutable  stringclass-immutable/unchangable
+StringBuffer()-16 bits memory space
+StringBuffer(String s)-16 bits+memory of s total is allocated
+StringBuffer(int capacity)-capacity memory is allocated
+s.Capacity()-tells the capacity
+s.insert(n,"string")//inserts string at nth pos
+s.insert(0,ch,startpos,length of chararr to be inserted)//to insert a chararr in a stringbuffer
+s.append("string")//adds at endof string
+s.delete(m,n)//deletes the string from mth pos to nth pos
+s.deleteCharAt(n)//deltes the char at nth pos
+s.reverse()//reverse the order
+String s=s1.toString()//for converting stringbuffer to string
+
+File f=new File(path/directory name)//(d:/welcome) creates a welcome directory in d drive
+f.mkdir()//gives true if it is possible to make a directory
+f.exists()//returns true if file exists
+f.isDirectory()//returns true if it is a directory i.e.,with extension .txt
+f.getName()//return file name
+f.getPath()//return path or getAbsolutePath()
+f.getParent()//gives root directory
+f.length()//gives length
+f.isFile()//return true if it is a file
+f.canRead()//checks if it is readable
+f.canWrite()//checks if it is writeable
+f.isHidden()//checks if it is hidden
+f.delete()//deletes file
+string s[]=f.list()//gives string array of files of given file
+DataOutputStream,FileOutputStream//for writing into file
+DataInputStream,FileInputStream//for reading from file
+DataOutputStream out=new DataOutputStream(new FileInputStream(d:/filename.txt))
+out.writeInt(22)//writes 22 into file
+writeFloat(2.2f),writeBoolean(true),writeLine()
+DataInputStream in=new DataInputStream(new FileInputStream(d:/filename.txt))
+in.readInt() gives integer from file
+in.readFloat(),in.readBoolean(),in.readLine()
+in.close(),out.close()//for closing streams
+for bufferedreader:
+replace DataInputStream with BufferedWriter for writing into file
+replace DataOutputStream with BufferedReader for reading
+for reading more than 2 files replace DataInputStream with SequenceInputStream and pass (new SIS(firstfile),new SIS(secondfile))
+for 2 files pass firstobj,new SIS(third file)
+while int c=in.read()!=-1: print (char)c read() only reads int//runs complete file
+
+for writing into file as bytes:
+create bufferedreader obj
+create fileoutputstream obj,if file does not exist it creates new file
+create bytearray//byte b[];
+String s=br.readLine()
+do b=s.getBytes();fobj.write(b);s=br.readLine() while(!s.equalsIgnoreCase("Exit")) 
+close fileobj
+for printing file content:
+create bufferedreader obj
+FileInputStream f=new FileInputStream(br.readLine())
+byte b[]=new byte(f.available())//creates byte array with size of file
+f.read(b)//reads file content into b
+for(i=0;i<b.length;i++) print (char)b[i]
+for writing into file as char:
+create fileoutputstream obj
+while int c=System.in.read()!='$': fobj.write(c)//here $ is to terminate
+close -fileobj.close()
+for printing:
+create fileinputstreamobj
+while int (c=fobj.read())!=-1: print (char)c
+
+RandomAccessFile r=new RandomAccessFile("filename","rw")
+for writing same as byte
+for reading:
+r.seek(0)
+byte b[]=new byte[(int)r.length()]
+r.read(b)
+for i=0 to b.length: print (char)b[i]
+
+streamtokenizer for counting no of words and digits:
+FileReader fr=new FileReader("filename")
+StreamTokenizer in=new StreamTokenizer(fr)
+while((int tok=in.nextToken())!=StreamTokenizer.IT_EOF)
+if tok==StreamTokenizer.IT_WORD c++//checks it it is a word
+if tok==StreamTokenizer.IT_NUMBER c1++//checks it is number
+writing into file using printstream:
+PrintStream pr=new PrintStream(file)
+pr.println("sentence")
+printwriter for printing on console only:
+PrintWriter pr=new PrintWriter(System.out,true)
+pr.println("welcome")//prints welcome on screen
+PrintWriter pr=new PrintWriter(new BufferedWriter(new FileWriter(filename.txt,true)))//creates an empty file and after filename
+
+for encrypting file d:/x and save to  d:/y:
+FileInputStream f=new FileInputStream(x)
+FileOutputStream f1=new FileOutputStream(y)
+String ch=""
+int c
+while((c=f.read())!=-1) ch+=(char)(c-5) 
+byte b[]=ch.getBytes()
+f1.write(b)
+close f,f1
+for decrypting:
+replace encrypted file name at x
+replace new file where you want to decrypt at y
+replace - with +
+use try except for this programs
+
+1d ArrayList: in util package,resizable
+Arrays.asList(arr)//arr to list
+List<int> list=arr.ToList(arr)//arr to list
+arrlis.toArray(newarr);//for convert arraylist to arr
+ArrayList<String> name=new ArrayList<String>();//creating array
+List<Integer>[] a= new List[n]//for creating arraylist of n size
+for other datatypes Integer,Float,Double,Boolean,Character which are wrapper classes
+name.add("str")//append to array or name.add(ind,ele)
+name.get(ind)//gives the elem at ind
+name.set("str",ind)//modifies the ele
+name.remove(ind)//for removing ele
+name.clear()//for removing all elements
+name.size()//gives size of array
+name.contains(val)//checks present or not
+name.removeAll(Arrays.asList(Integer.valueOf(0)))//for removing all zeroes
+Arrays.sort(name)//for sorting
+Arrays.binarySearch(arr,val)//returns >0 if present 
+Collections.sort(name)//sorts the array using collections package in util
+Collections.sort(studentlist,Comparator.comparing(Student :: getCgpa).reversed().thenComparing(Student :: getFname).thenComaparing(Student :: getId));
+//in java8 for sorting student gpa in descending order if same comparing fname again if same comparing id
+for(String i : name) print(i)//for printing array
+or for(int i=0;i<name.size();i++) print(name.get(i))
+2d ArrayList: 
+ArrayList<ArrayList<Integer>> a=new ArrayList<ArrayList<Integer>>();
+x.add(new ArrayList<Integer>())//for allocating space for new row
+x.get(0).add(0,3)//for adding 3 at 0th row  0th column or
+x.add(new ArrayList<Integer>(Arrays.asList(3)))//for allocating space for new row and adding elements
+LinkedList is same as ArrayList: some extra methods
+name.addFirst("str"),addLast//adds at first,last
+name.removeFirst(),removeLast()//removes first ele,last ele
+name.getFirst(),getLast()//gives first ele,last
+HashMap : in util package,store key=value key and values can be of any  type
+HashMap<String,Integer> name=new HashMap<String,Integer>()
+name.put("key",value)//adds key=value
+name.get("key")//gives value of key
+name.containsKey("key")//returns true or false
+name.remove("key")//remove item
+name.clear()//removes all items
+name.size()//gives size
+for (String i : name.keySet()) print(i),print(name.get(i))//gives keys,values
+name.values()//gives values
+HashSet : in util package,it allows ele only once
+HashSet<String> name=new HashSet<String>()
+HashSet s=new Hashset(Arrays.asList(stringarr))//convert strarr to set
+methods name.add("str") for adding
+s.addAll(arr)//adds arr ele to set
+collections.addAll(a,b)//adds b to a here a is of type Object so we can add int arr or str arr combinely
+name.remove("str")//for removing
+name.contains("str")//checks present or not
+name.clear()//empty the set
+name.size()//for getting size
+Iterator : util package,for loop may not work properly for resizeable arrays so use iterator
+Iterator<String> it=name.iterator()
+while(it.hasNext())
+Integer i=it.next() or Object i=it.next()//which takes any ele
+if i<10 it.remove()
+lambda: name.forEach((i) -> {sop(i);})//for printing array list
+for generics: use wrapper class i.e.,Integer a[]={1,2,3}
+public <T> void methodname(T[] arr)//T is template which will become int if integer arr is passed string if string arr is passed 
+if Object arr is passed place Object[] after T
+it is used to print  both int arr and str arr using only one method
+for generic class-class name<T> and for obj-classname<String> obj=new classname<String>();
+TreeSet-for soring large amount of data automatically sorts when ele are added
+TreeSet<String> ts=new TreeSet<String>() //stringbuffer can't be used
+ts.method() methods:
+add("ele") for adding elements 
+contains(ele),isEmpty() return true or false
+first() gives first ele,last() gives last ele
+remove("ele") remove ele,pollFirst() removes first ele,pollLast() removes last ele
+higher("ele") gives higher ele than the passed ele,lower(ele)
+Vector v=new Vector();//default size is 10
+v.add(ele) adds ele,v.add(ind,ele) adds ele at ind,v.addAll(ind,arraylist) adds ele of arraylistat ind if ind is not mentiones adds at last
+v.setElementAt(ind,ele) modifies ele at ind,v.insertElementAt(ind,ele)
+v.remove(ele) removes ele,v.get(ind) gets ele at ind,firstElement(),lastelement() gives first and last ele
+v.trimToSize() trims the vector to its size,v.size() give size,capacity() gives capacity
+v.equals(v1) compares two vectors
+v.retainAll(v2)// retains only v2 ele in v
+v.copyInto(arr)//copys vector ele to specified arr
+indexOf(ele),lastIndexOf(ele),isEmpty,contains(ele) return t/f
+clear() clears vector,hashCode() gives hashcode of vector
+Stack: LIFO ,subclass of vector
+Stack st=new Stack()//for creating
+st.push(ele)//pushing ele
+st.pop()//pops ele
+st.peek()//gives top ele
+st.isEmpty()//return true or false
+st.search(ele)//gives pos of ele
+Deque<String> d=new LinkedList<String>();
+d.add("ele"),d.addLast("ele"),d.offer("ele")//adds ele at last
+d.push("ele"),d.addFirst("ele"),d.offerFirst("ele")//adds ele at first
+d.removeFirst(),d.removeLast()
+Deque<String> d=new ArrayDeque<String>();
+add(ele),push(ele),addFirst(ele),addLast(ele),contains(ele),getFirst(),getLast(),offer,offerfirst
+peek gives head,peekLast,poll removes head,pollLast,pop removes tail,removeFirst(),removeLast(),size(),clear()
+priorityqueue: PriorityQueue<String> p=new PriorityQueue<String>();
+Object c[]=p.toArray();//converts pq into arr
+p.add(ele),p.remove(ele),p.poll(),p.peek()
+
+Thread class,Runnable interface use try catch
+obj.start()//automatically calls run() method of obj class
+Thread.currentThread.getName()//give currthread name
+Thread t1=new Thread(this) and t1.start()//for run() when runnable implemented
+in class constructor pass super("str")//str will be the thread name and call start() method which executes run()
+Thread.sleep(millisec)//sleeps the process
+obj.setPriority(Thread.MIN_PRIORITY)//prints the curr obj at last
+synchronized method will run until its completion
+resume() continue the suspend()
+notify() continue the wait()
+notifyall() continues all waiting thread
+Applet//import java.applet.*; package for GUI(graphical user interface)
+import java.awt.*;abstract  window toolkit for gui
+extend the Applet class
+setLayout(new FlowLayout())//default layout for Applet
+Label l1,l2;
+TextField t1,t2;
+Button b1;
+init() for initializing variables{
+l1=new Label("enter name");l2=new Label("enter age");
+t1=new TextField(10);t2=new TextField(2);
+b1=new Button("click");
+add(l1);add(t1);add(l2);add(t2);add(b1);
+//<applet code=classname height=400 piexels width=400><\applet> this html tag is mandatory
+compile asusual and for run:appletviewer classname.java
+setBackground(color.blue)//for background color
+setBackground(new Color(r.nextInt(rgbvalue),...))//here r is obj of Random class for settin random backgroundcolors using thread sleep//use thread in init method
+stop() method for stopping process
+destroy() method destroys all what we have done
+repaint() 
+paint(Graphics g)//this method for painting  graphics class under awt.event.*;
+g.drawString("str",100,100)//for printing msg
+g.setColor(new Color(r,0,0))//sets color r
+g.fillOval(distance,x,y,z)//x,y,z is size of oval,dis is dis from start
+l1.setFont(new Font("Arial",Font.Bold,36))//for setting font, 36 is size
+l1.setForeground(Color.magenta)//for setting color magenta-shiny pink
+
+Pattern.matches("condition","str")
+we have to use \\ to represent \ backslash in java i.e., for \d use \\d
+\d anydigit[0-9] \D non digit[^0-9] 
+\s any whitespace \S any whitespace
+\w any wordchar[a-zA-z_0-9] \W any non wordchar[^\W]
+\b word boundary \B non word boundary
+. for any single char \. matches dot
+^ means beginning of new line ^ inside [] means negate
+$ means end
+?once or none +once or more *zero or more w{n}exactly n times w{n,}n or more w{x,y}atleast x max y
+[w&&[^x]] word char except x
+Pattern p=Pattern.compile("regex")
+Pattern p=Pattern.compile("regex",Pattern.CASE_INSENSITIVE)//compile ignoring case
+Matcher m=p.matcher("str")
+m.find() for checking whether it found or not
+m.group()  group the found substr's,m.group(1) gives first found substr
+m.start() gives start ind of matched str
+m.end() gives end ind of matched str
+*? matches smallest match and stop at first match
+a(?!b) means a is not followed by b
+a|b matches a or b
+s.matches("regex")//returns true if it matches the entire str
+s.split("regex")//creates an arr of matched substr
+s.replaceFirst("regex")//replace the first occur of matched substr
+s.replaceAll("regex","replacement")//replacea all matched substr
+\b(\w+)\s+\1\b for duplicate words
+\1 refers first word match,\b boundary must be mentiones to vary eg:"this is" to vary 'is' \b is used
+?: noncapturing group
+() saves the content in groupwise
+
+void name(int... args) for any no of arguments
+for(int i :args)print(i)
+Class met=classname.class;for getting methods of that class (declares a variable of type class which is assigned to required class)
+Method[] m=met.getDeclaredMethods()//gives arr of method in class
+for(Method i:m)i.getName()//gives method name 
+import static java.lang.System.in; for avoiding bufferedreader error 'in'

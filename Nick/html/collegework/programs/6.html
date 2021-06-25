@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Onsubmit</title>
+    <script>
+      function ValidationEvent() {
+          console.log("10");
+          var name = document.getElementById("name").value;
+          var email = document.getElementById("email").value;
+          var contact = document.getElementById("contact").value;
+          var emailReg = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+          if (name != '' && email != '' && contact != '') {
+              if (email.match(emailReg)) {
+                  if (document.getElementById("male").checked || document.getElementById("female").checked) {
+                      if (contact.length == 10) {
+                          alert("Registration completed");
+                          return true;
+                      } else {
+                          alert("The Contact No. must be at least 10 digit long!");
+                          return false;
+                      }
+                  } else {
+                      alert("You must select gender.....!");
+                      return false;
+                  }
+              } else {
+                  alert("Invalid Email Address...!!!");
+                  return false;
+              }
+          } else {
+              alert("All fields are required.....!");
+              return false;
+          }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="main">
+        <form onsubmit="ValidationEvent()">
+          <label>Name :</label>
+          <input id="name" name="name" placeholder="Enter Name" type="text" />
+          <br />
+          <label>Email :</label>
+          <input
+            id="email"
+            name="email"
+            placeholder="Enter valid email"
+            type="text"
+          />
+          <br />
+          <label>Gender :</label>
+          <input id="male" name="gender" type="radio" value="Male" />
+          <label>Male</label>
+          <input id="female" name="gender" type="radio" value="Female" />
+          <label>Female</label>
+          <br />
+          <label>Contact No. :</label>
+          <input
+            id="contact"
+            name="contact"
+            placeholder="Enter Contact No."
+            type="text"
+          />
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

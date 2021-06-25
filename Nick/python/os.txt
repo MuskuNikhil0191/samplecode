@@ -1,0 +1,398 @@
+//fcfs
+n=int(input("enter no of processes:"))
+p=[]
+s="P"
+for i in range(n):
+    p.append(s+str(i+1))
+b=list(map(int,input("enter burst times:").split()))
+w=[0] * n
+c=0
+sw=0
+for i in range(1,n):
+    w[i]=b[i-1]+w[i-1]
+    sw+=w[i]
+t=[]
+st=0
+for i in range(n):
+    t.append(w[i]+b[i])
+    st+=t[i]
+print("Process\tBurst time\tWaiting time\tTurnaroundTime")
+for i in range(n):
+    print(p[i],b[i],w[i],t[i],sep="\t")
+print("average waiting time:",sw/n)
+print("average turnaroundtime:",st/n)
+
+
+
+//bestfit
+b= [100, 500, 200, 300, 600]  
+p= [212, 417, 112, 426] 
+nb=len(b)
+np=len(p)
+a=[0] * np
+for i in range(np):
+    m=max(b)+1
+    ind=nb
+    c=p[i]
+    for j in range(nb):
+        if b[j]>=c:
+            if b[j]<m:
+                ind=j
+                m=b[j]
+    if ind!=nb:
+        b[ind]-=c
+        a[i]=ind+1
+print(a)
+
+//worst fit
+b= [100, 500, 200, 300, 600]  
+p= [212, 417, 112, 426] 
+nb=len(b)
+np=len(p)
+a=[0] * np
+for i in range(np):
+    c=p[i]
+    ind=nb
+    m=min(b)-1
+    for j in range(nb):
+        if b[j]>=c:
+            if b[j]>m:
+                m=b[j]
+                ind=j
+    if ind!=nb:
+        b[ind]-=c
+        a[i]=ind+1
+print(a)
+
+//firstfit
+b= [100, 500, 200, 300, 600]  
+p= [212, 417, 112, 426] 
+nb=len(b)
+np=len(p)
+a=[0] * np
+for i in range(np):
+    for j in range(nb):
+        if b[j]>=p[i]:
+            b[j]-=p[i]
+            a[i]=j+1
+            break
+print(a)
+
+//sequencial file allocation
+t=int(input("Do you want to enter files : 'Yes - 1' 'No - 0' :"))
+f=[0] * 50
+while t==1:
+    s,l=map(int,input("enter starting address and length of file:").split())
+    c=0
+    for i in range(s,s+l):
+        if f[i]==0:
+            c+=1
+    if c==l:
+        for i in range(s,s+l):
+            f[i]=1
+        print("file is allcated")
+    else:
+        print("file is not allocated")
+    t=int(input("Do you want to enter files : 'Yes - 1' 'No - 0'"))
+
+//round robin
+n=int(input("enter no of processes:"))
+p=[]
+s="P"
+for i in range(n):
+    p.append(s+str(i+1))
+b=list(map(int,input("enter burst times:").split()))
+q=int(input("enter time quantum:"))
+w=[0] * n
+c,t=0,0
+b1=b.copy()
+while c==0:
+    c=0
+    for i in range(n):
+        if b1[i]<=0:
+            c=1
+            continue
+        else:
+            c=0
+        if b1[i]>q:
+            b1[i]-=q
+            t+=q
+        else:
+            t+=b1[i]
+            b1[i]=0
+            w[i]=t-b[i]
+t=[]
+sw,st=0,0
+for i in range(n):
+    t.append(w[i]+b[i])
+    st+=t[i]
+    sw+=w[i]
+print("process\tbursttime\twaitingtime\tturnaroundtime")
+for i in range(n):
+    print(p[i],b[i],w[i],t[i],sep='\t')
+print("average waiting time:",sw/n)
+print("average turnaroundtime:",st/n)
+
+
+//sjf
+n=int(input("enter no of processes:"))
+p=[]
+s="P"
+for i in range(n):
+    p.append(s+str(i+1))
+b=list(map(int,input("enter burst times:").split()))
+w=[0] * n
+t=[]
+sw,st=0,0
+for i in range(1,n):
+    c=b[i]
+    cp=p[i]
+    j=i-1
+    while j>=0 and b[j]>c:
+        b[j+1]=b[j]
+        p[j+1]=p[j]
+        j-=1
+    b[j+1]=c
+    p[j+1]=cp
+for i in range(1,n):
+    w[i]=b[i-1]+w[i-1]
+    sw+=w[i]
+for i in range(n):
+    t.append(w[i]+b[i])
+    st+=t[i]
+print("process\tbursttime\twaitingtime\tturnaroundtime\t")
+for i in range(n):
+    print(p[i],b[i],w[i],t[i],sep='\t')
+print("average waiting time:",sw/n)
+print("average turnaroundtime:",st/n)
+
+//fifo page replacement
+l=[7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+c=4
+s=set()
+q=[]
+p=0
+for i in l:
+    if i not in q:
+        if len(q)<c:
+            q.append(i)
+        else:
+            q.pop(0)
+            q.append(i)
+        p+=1
+print(p)
+
+//least recently used page replacement
+l=[7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+c=4
+q=[]
+p=0
+for i in l:
+    if i not in q:
+        if len(q)<c:
+            q.append(i)
+        else:
+            q.pop(0)
+            q.append(i)
+        p+=1
+    else:
+        q.remove(i)
+        q.append(i)
+print(p)  
+
+//optimal page replacement
+l=[7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+c=4
+q=[]
+p=0
+for i in range(len(l)):
+    if l[i] not in q:
+        if len(q)<c:
+            q.append(l[i])
+        else:
+            nl=l[i+1:]
+            ind=[]
+            ele=-1
+            for j in q:
+                if j not in nl:
+                    ele=j
+                    break
+                else:
+                    ind.append(nl.index(j))
+            if ele!=-1:
+                q.remove(ele)
+                q.append(l[i])
+            else:
+                ele=nl[max(ind)]
+                q.remove(ele)
+                q.append(l[i])
+        p+=1
+print(p)
+
+//fcfs disk scheduling
+arr = [ 176, 79, 34, 60, 92, 11, 41, 114 ]; 
+head=50
+s=0
+d=0
+for i in arr:
+    d=abs(i-head)
+    head=i
+    s+=d
+print(s)
+
+//scan disk scheduling
+arr = [ 176, 79, 34, 60, 92, 11, 41, 114 ]
+head = 50
+size=200
+direction = "left"
+s=0
+if direction=="left":
+    s=head-0
+    if max(arr)>head:
+        s+=max(arr)
+else:
+    s=size-1-head
+    if min(arr)<head:
+        s+=size-1-min(arr)
+print(s)
+
+//circular scan disk scheduling
+arr = [ 176, 79, 34, 60, 
+        92, 11, 41, 114 ]
+head = 50
+size=200
+s=size-1-head
+s+=size-1
+if min(arr)<head:
+    m=[i for i in arr if i<head]
+    s+=max(m)
+print(s)
+
+//look disk scheduling
+arr = [ 176, 79, 34, 60, 
+        92, 11, 41, 114 ]
+head = 50
+size=200
+direction="right"
+s=0
+if direction=="left":
+    if min(arr)<head:
+        s+=head-min(arr)
+    if max(arr)>head:
+        s+=max(arr)
+else:
+    if max(arr)>head:
+        s+=max(arr)-head
+    if min(arr)<head:
+        s+=max(arr)-min(arr)
+print(s)   
+
+cn:
+
+//bit stuffing and destuffing
+d='0111111'
+flag='01111110'
+i,j=0,0
+c=0
+while i<len(d):
+    if d[i]=='1':
+        c+=1
+    else:
+        c=0
+    i+=1
+    if c==5:
+        if i==len(d):
+            d=d[:i]+'0'
+        else:
+            d=d[:i]+'0'+d[i:]
+            i+=1
+        c=0
+stuff=flag+d+flag
+print(stuff)
+i,j=0,0
+while i<len(d):
+    if d[i]=='1':
+        c+=1
+    else:
+        c=0
+    i+=1
+    if c==5:
+        if i==len(d)-1:
+            d=d[:i]
+        else:
+            d=d[:i]+d[i+1]
+print(d)
+
+
+//character stuffing and destuffing
+d="DDEDFFDE"
+i=0
+while i<len(d):
+    if d[i]=='F' or d[i]=='E':
+        d=d[:i]+'E'+d[i:]
+        i+=1
+    i+=1
+print(d)
+i=0
+while i<len(d):
+    if d[i]=='F':
+        d=d[:i-1]+d[i:]
+    elif d[i]=='E':
+        if d[i+1]=='F':
+            i+=1
+            continue
+        else:
+            d=d[:i]+d[i+1:]
+    i+=1
+print(d)
+
+//crc
+def xor(div,crc):
+    res=""
+    for i in range(1,len(crc)):
+        if div[i]==crc[i]:
+            res+='0'
+        else:
+            res+='1'
+    return res         
+
+data = "100100"
+crc = "1101"
+p=len(crc)
+app='0' * (p-1)
+dividend=data+app
+div=dividend[:p]
+while p<len(dividend):
+    if div[0]=='1':
+        res=xor(div,crc)
+        div=res+dividend[p]
+    else:
+        res=xor(div,'0' * (len(crc)))
+        div=res+dividend[p]
+    p+=1
+if div[0]=='1':
+    res=xor(div,crc)
+else:
+    res=xor(div,'0'*len(crc))
+print(res)  
+msg=data+res
+print(msg)
+p=len(crc)
+div=msg[:p]
+while p<len(msg):
+    if div[0]=='1':
+        res=xor(div,crc)
+        div=res+msg[p]
+    else:
+        res=xor(div,'0'*len(crc))
+        div=res+msg[p]
+    p+=1
+if div[0]=='1':
+    res=xor(div,crc)
+else:
+    res=xor(div,'0'*len(crc))
+print(res)
+
+
+
+

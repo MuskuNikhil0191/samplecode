@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display:block;
+            margin:0 auto;
+            border:2px solid #00bfff;
+            height:700px;
+            width:700px;
+            background-color: #c9e0f6;
+        }
+        .row{
+            padding:20px;
+        }
+        input[type=submit]{
+            display:block;
+            margin:0 auto;
+            padding:12px 30px;
+            background-color:#100c08;
+            color:white;
+            border:none;
+            border-radius:4px;
+            cursor: pointer;
+        }
+        input[type=text],input[type=number],input[type=email],textarea,select{
+            width:40%;
+            float:center;
+            padding:8px;
+            border:1px solid #00bfff;
+            border-radius:4px;
+        }
+        label{
+            float:left;
+            text-align:right;
+            width:30%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <div class="row">
+                <label for="n"><b>Name</b><br>Add your name</label>
+                <input type="text" name="name" id="n">
+            </div>
+            <div class="row">
+                <label for="e"><b>Email</b><br>Enter a valid Email</label>
+                <input type="email" name="email" id="e">
+            </div>
+            <div class="row">
+                <label for="p"><b>Phone</b><br>Add a Phone number</label>
+                <input type="number" name="phone" id="p">
+            </div>
+            <div class="row">
+                <label for="w"><b>Website</b><br>Your Website</label>
+                <input type="text" name="website" id="w">
+            </div>
+            <div class="row">
+                <label for="pr"><b>Priority</b><br>Priority Level</label>
+                <select id="pr" name="priority">
+                    <option value="Low" selected>Low</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="t"><b>Type</b><br>Type of content</label>
+                <select id="t" name="type" placeholder="website update">
+                    <option value="yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="m"><b>Message</b><br>Type your message</label>
+                <textarea rows=5 cols=30></textarea>
+            </div>
+            <div class="row">
+                <input type="submit" name="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

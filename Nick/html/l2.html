@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    
+    <nav class="navbar bg-dark navbar-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse justify-content-around" id="data">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4 class="text-white">About</h4>
+                        <p class="text-secondary">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <a class="text-white" href="#"><h4>Contact</h4></a>
+                        <a class="text-white" href="#"><p>Follow on twitter</p></a>
+                        <a class="text-white" href="#"><p>Follow on facebook</p></a>
+                        <a class="text-white" href="#"><p>Email me</p></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <a href="#" class="navbar-brand"><img src="data:image/png;base64,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" style="height:20px;width:20px;" class="mr-2" alt=""><b>Album</b></a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#data"><span class="navbar-toggler-icon"></span></button>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <p class="display-4 text-center">Album example</p>
+                <p class="text-center">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+                <div class="text-center">
+                    <button class="btn btn-primary ">Main call to action</button>
+                    <button class="btn btn-secondary">Second action</button>
+                </div>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+    </div>
+    <div class="jumbotron mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary d-flex align-items-center justify-content-center" style="height:200px;">
+                            <h4 class="text-white">Thumbnail</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <button class="btn btn-light btn-outline-dark">View</button>
+                                        <button class="btn btn-light btn-outline-dark">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <p>9 min</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <p>Album example is © Bootstrap, but please download and customize it for yourself!<span class="float-right"><a href="#">Back to Top</a></span></p>
+        <p>New to Bootstrap? <a href="#">Visit the homepage</a> or read our <a href="#">getting started guide</a>.</p>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3P6lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>

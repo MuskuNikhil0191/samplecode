@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-weight:bold;
+        }
+        .tot{
+        margin:20px;
+  padding:20px;
+  border:2px solid black;
+  width:auto;
+        }
+        span{
+        color:red;}
+        .one{
+  padding:20px;
+        height:auto;
+        width:700px;}
+        input[type=text],input[type=number],input[type=email],select,textarea{
+        width:50%;
+        float:center;
+        }
+        .label{
+            width:25%;
+            float:left;
+        }
+        input[type=checkbox]{
+          margin-left:35px;
+        }
+      </style>
+</head>
+<body>
+    <div class="tot">
+      <h1>Zoo Keeper Application Form</h1>
+      <i>please complete the form.Mandatory fields are marked with<span>*</span></i>
+      <div class="one">
+        <form>
+          <fieldset>
+            <legend>CONTACT DETAILS</legend>
+            <br>
+            <div class="label">
+            <label for="n">Name
+              <span>* </span>
+            </label>
+          </div>
+            <input type="text" id="n" name="Name" size="30">
+            <br>
+            <br>
+            <div class="label">
+            <label for="t">Telephone</label>
+          </div>
+            <input type="number" id="t" name="telephone" size="30">
+            <br>
+            <br>
+            <div class="label">
+            <label for="e">Email
+              <span>*</span>
+            </label>
+          </div>
+            <input type="email" id="e" name="email" size="30">
+            <br>
+            <br>
+          </fieldset>
+        </form>
+      </div>
+      <div class="one">
+        <form>
+          <fieldset>
+            <legend>PERSONAL INFORMATION</legend>
+            <br>
+            <div class="label">
+            <label for="a">
+              <span>*</span>Age</label>
+            </div>
+            <input type="number" id="a" name="age" size="30">
+            <br>
+            <br>
+            <div class="label">
+            <label for="g">Gender</label>
+          </div>
+            <select id="g" >
+              <option value="Male" selected>Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <br>
+            <br>
+            <div class="label">
+            <label>When did you first know you wanted to be a zoo keepper</label>
+          </div>
+            <textarea id="s" rows="10" cols="30" size="10"></textarea>
+</fieldset>
+</form>
+</div>
+<div class="one">
+<form>
+<fieldset>
+<legend>PICK YOUR FAVOURITE ANIMALS</legend><br>
+<input type="checkbox" id="ze" name="Zebra">
+<label for="ze">Zebra</label>
+<input type="checkbox" id="ca" name="cat">
+<label for="ca">Cat</label>
+<input type="checkbox" id="do" name="dog">
+<label for="do">Dog</label>
+<input type="checkbox" id="an" name="anaconda">
+<label for="an">Anaconda</label><br><br>
+<input type="checkbox" id="li" name="lion">
+<label for="li">Lion</label>
+<input type="checkbox" id="ti" name="tiger">
+<label for="ze">Tiger</label>
+<input type="checkbox" id="De" name="deer">
+<label for="de">Deer</label>
+<input type="checkbox" id="ka" name="kangaroo">
+<label for="ka">Kangaroo</label><br><br>
+</fieldset>
+</form>
+</div>
+<input style="border:2px solid skyblue; margin-left:20px; padding:8px; border-radius:5px;" type="button" value="Submit Application">
+</div>
+</body>
+</html>
