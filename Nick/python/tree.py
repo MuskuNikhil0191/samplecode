@@ -116,6 +116,24 @@ class tree:
             if x.right!=None:
                 s1.append(x.right)
         print(s2[::-1])
+    def printpost1(self):
+        cur=self.root
+        s=[]
+        while cur!=None or len(s)!=0:
+            if cur:
+                s.append(cur)
+                cur=cur.left
+            else:
+                t=s[-1].right
+                if t==None:
+                    x=s.pop()
+                    print(x.value,end=' ')
+                else:
+                    if t!=x:
+                        cur=t
+                    else:
+                        x=s.pop()
+                        print(x.value,end=' ')
     def print_tree_postorder1(self):
         s=[]
         temp=self.root
