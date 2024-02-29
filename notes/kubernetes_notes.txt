@@ -1,0 +1,175 @@
+kubernetes notes
+-------------------------------------
+> Open source container orchestration tool
+> Developed by Google
+> Helps you manage containerized applications in different deployment environments
+• High Availability or no downtime,Scalability or high performance,Disaster recovery - backup and restore
+
+•worker nodes(servers or nodes) is a server consists of docker containers(pods) running
+•Pod: Smallest unit of K8s,Abstraction over container,Usually 1 application per Pod,Each Pod gets its own IP address,user interact with pod rather than with the container(it adds a layer above the container)
+• service : allocates permanent ip so even pod(container) dies and recreates ip won't change ( in case of pod ip allocation, new ip is assigned & it has 2 functionlities(permanent ip and load balancer)
+•Ingress : is used to forward the traffic to corresponding service(ip attached to pod) ,traffic received by domain name
+•ConfigMap: external configuration of your application(for change in db url of pod)
+• secret : same to configmap(but used for secrets like uername,passwd etc.,)
+• volume : Storage on local machine or remote, outside of the K8s cluster attached to the database container pod
+• deployment : blue print for pods, we create deployments replicas(works in back)
+• statefulset: for stateful apps like sql,mongodb databases(deployment of database i.e,. 
+replica of database pod)(works in back)
+
+------------------------------------------------------------------------------------------
+
+• Kubelet interacts with both - the container and node(to allocate cpu), Kubelet starts the pod with a container inside(container run time)(each node consists of a container service kublet)
+•kube proxy is responsible for forwarding services to pods for communication between app and db in their respective node
+*worker machine in k8s cluster follow 3 processes : kubelet,kube proxy and independent container runtime on each node
+
+-------------------------------------------------------------------------------------------
+
+*master process(master nodes) manage worker nodes and it consists of :
+*api-server : client->api server or cluster gateway in master server(acts as a gatekeeper for authentication)->worker nodes(random schedule a pod in some node)
+*scheduler : other process is client->api server->scheduler(schedule a pod intelligently to the node which has pods running with low cpu usage , there it schedules a new pod rathar than scheduling randomly in one node)
+*control manager : detects k8s cluster state changes(if a pod dies in node)(control manager -> scheduler to reschedule the dead pods)
+* etcd: it is the cluster brain, Cluster changes get stored in the key value store(data (cluster state)storage of entire thing, all the above ones depends on this)(but it not stores the actual application data of pod)
+*master nodes are replicated, each k8s cluster consists of master nodes and worker nodes
+
+---------------------------------------------------------------------------------------------
+
+miniKube :
+
+*Test/Local Cluster Setup , Master and Node processes run on ONE machine(set up of entire master and node servers on our local machine)s
+*creates Virtual Box on your laptop,Node runs in that Virtual Box,1 Node K8s cluster
+*it has docker runtime(docker pre installed)
+
+Kubectl : command line tool for k8s cluster, it communicates with the master nodes api server to create or delete components and enable/delete the pods.
+*it is also used to interact with any type of k8s cluster, even in cloud
+
+---------------------------------------------------------------------------------------------
+
+Layers of Abstraction
+Deployment manages a replicaset
+ReplicaSet manages a pod
+Pod is an abstraction of container
+Container is a docker container
+
+*we need to create a deployment from the docker image , so that the pod and the replicaset are created, if we modify the deployment then the new pods & replicaset are created,by terminating the old ones
+*deleting deployments will delete the pods and the replicasets.CRUD operations are done on deployment level
+*kubectl apply command is used to configure the file we provide as parameters to create a deployment,configuration files are .yaml format, and we specify deployment name,specification for deployment,replicas,specification for pods, port etc,.
+*we can update config file and apply it, then it will identify if there is old deployment with this file, if it is there it will update by adding a new pod instead of creating a new deployment.
+*there is a status(comes from etcd) similar to state file in tf, it will compare to the config file, if any addons require, then it will create them
+*label of deployment config file is used by service config file selector, to connect the pod & service
+
+CRUD commands :
+Create deployment - kubectl create deployment [name]
+Edit deplovment - kubectl edit deployment [name]
+Delete deployment - kubectl delete deployment [name]
+
+Status of different K&s components:
+kubectl get nodes | pod |  services | replicaset | deployment
+
+Debugging pods:
+Log to console - kubectl logs [pod name]
+Get Interactive Terminal - kubectl exec -it [pod name] -- bin/bash
+Get info about pod - kubectl describe pod [pod name]
+
+Use configuration fle for CRUD : 
+Apply a configuration file - kubectl apply -f [file name]
+Delete with configuration file - kubectl delete -f [file name]
+
+---------------------------------------------------------------------------------------------
+
+*K8s Namespaces are virtual clusters created in the k8s cluster, by default 4 namespaces are created for 1 cluster:
+>Kube-system: namespace for minikube doesn't come under standard cluster,shouln't modify anything in this namespace
+>Kube-public : publicly accessible data, like configmap which contains cluster info
+>kube-node-lease: heartbeats of node, determines availability of node
+>default : resources we create come under this
+*we can create our own namespaces either through cli or config file(for grouping resources, staging,differnet projects, blue/green deployment(different versions of productions, blue-active,green-next version to be coming)
+*Components, which can't be created within a Namespace are volume & node(they can't be isolated, they are globally available)
+*kuben tool is used to change the default namespace to our own namespace, so instead of including namespace in every kubectl command we can directly hit asusual
+
+*Ingress controller evaluates all the rules, manages redirections,entrypoint to cluster
+*Ingress is used to assign a hostname , which maps to the internal service , similar to external service which uses external ip and port , but ingress doesn't require that
+
+*to automate the creation of k8s ansible is used for configuration management
+*
+
+---------------------------------------------------------------------------------------------
+HELM :
+
+*Package manager for kubernetes(like yum, apt, brew )
+*To package YAML Files and distribute them in public and private repositories
+
+---------------------------------------------------------------------------------------------
+COMMANDS:
+
+>brew install heperkit : for installing hypervisor
+>brew install minikube : install minikube , it will install with kubectl dependency
+>minikube start --vm-driver=hyperkit ( to start with the hypervisor layer)
+>kubectl get nodes : for getting status of nodes of k8s clusters
+>minikube status : status of minikube
+>kubectl version : version of k8s running in minikube
+
+install hyperhit and minikube : 
+brew update
+brew install hyperkit
+brew install minikube
+kubectl
+minikube
+
+create minikube cluster : 
+minikube start --vm-driver=hyperkit
+kubectl get nodes
+minikube status
+kubectl version
+
+delete cluster and restart in debug mode : 
+minikube delete
+minikube start --vm-driver=hyperkit --v=7 --alsologtostderr
+minikube status
+
+kubectl commands : 
+kubectl get nodes
+kubectl get pod
+kubectl get services
+kubectl create deployment nginx-depl --image=nginx : to create pod , deployment is abstraction later on which pods are created
+kubectl get deployment
+kubectl get replicaset
+kubectl edit deployment nginx-depl
+
+debugging : 
+kubectl logs {pod-name}
+kubectl exec -it {pod-name} -- bin/bash
+
+create mongo deployment : 
+kubectl create deployment mongo-depl --image=mongo
+kubectl logs mongo-depl-{pod-name}
+kubectl describe pod mongo-depl-{pod-name}
+
+delete deplyoment : 
+kubectl delete deployment mongo-depl
+kubectl delete deployment nginx-depl
+
+create or edit config file : 
+vim nginx-deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl get pod
+kubectl get deployment
+
+delete with config : 
+kubectl delete -f nginx-deployment.yaml
+#Metrics
+kubectl top The kubectl top command returns current CPU and memory usage for a cluster’s pods or nodes, or for a particular pod or node if specified.
+
+
+
+link for commands : 
+
+https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/basic-kubectl-commands/cli-commands.md
+
+
+
+
+
+
+
+
+
+

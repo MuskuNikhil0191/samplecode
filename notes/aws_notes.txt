@@ -1,0 +1,997 @@
+ 
+AWS NOTES
+----------
+
+AWS,azure,GCP are cloud platforms
+High availability,Disaster recovery, fault tolerant,scalabality,redundant cloud services
+
+*Aws region the geographical location that contains no of availability zones(data centers),each region is separate from other regions and has separate power,water supply and ensure compilance and latency(faster access to users), us-east-1 is the largest region
+*aws availability zone is the logical data center located in region, it has seperate power and networking(so if one down others will be there),each region can have one or more az and each az has a bunch of servers (provides high availability and disaster recovery)
+
+*AWS edge locations run amazon cloud front to help get content closer to customers from anywhere in the world
+*Aws edge locations are used to communicate with the aws services in the area with far az , with low latency and faster communication and also it can use DNS service with the help of route 53 so that customers can easily access
+*AWS OUTPOSTS , where aws will fully install an operational mini region inside our data center which will be managed by the aws and it is isolated from other.
+*Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service that helps you easily deploy, manage, and scale containerized applications.
+
+----------------------------------------------------------------------------------------------------
+
+IAM Section - Summary
+• Users: mapped to a physical user, has a password for AWS Console
+• Groups: contains users only
+• Policies: JSON document that outlines permissions for users or groups
+• Roles: for EC2 instances or AWS services
+• Security: MFA + Password Policy
+• AWS CLI: manage your AWS services using the command-line
+• AWS SDK: manage your AWS services using a programming language
+• Access Keys: access AWS using the CLI or SDK
+• Audit: IAM Credential Reports & IAM Access Advisor
+
+----------------------------------------------------------------------------------------------------
+
+22-ssh, sftp
+23-ftp(file transfer protocol)
+80-http
+443-https
+3389-remote desktop access
+
+----------------------------------------------------------------------------------------------------
+
+If AWS EC2 instance is not accessed by ssh or http by getting a timeout, then it is definitely blocked by security groups, we need to go first check the security groups
+
+*EC2 instances are virtual servers ,first step we choose AMI(software configuration, OS ) to add to EC2 and next instance type(choose according to the required no of vcpus and memory)
+*ec2 user data is the script(like init commands, installing softwares etc.,) that runs when the ec2 instance is launched until its initialized
+
+. Security Groups are the fundamental of network security in AWS
+• They control how traffic is allowed into or out of our EC2 Instances.
+• Security groups are acting as a "firewall" on EC2 instances
+
+To access ssh from terminal:
+
+- goto respective folder
+
+- chmod 0400 EC2Demo.pem
+
+-  ssh -i "Ec2 tutorial.pem" ec2-user@174.129.66.34
+
+- 'logout' to close the connection
+
+- ssh -i ~/.ssh/id_rsa private.ip.of.other.server : to connect to the private ec2 from other ec2
+
+Never enter iam access key in ec2 instance console
+
+----------------------------------------------------------------------------------------------------
+
+. On demand: coming and staying in resort whenever we like, we pay the full price(pay for the compute capacity, no long term commitments
+(use cases:short term, irregular workloads cannot be interrupted)
+• Reserved: like planning ahead and if we plan to stay for a long time, we may get a good discount(upto 72 hrs, can be only 1 or 3 years)
+(use cases:
+• Savings Plans: pay a certain amount per hour for certain period and stay in any room type (e.g.,
+King, Suite, Sea View, ...)
+• Spot instances: the hotel allows people to bid for the empty rooms and the highest bidder keeps the rooms. You can get kicked out at any time(ask for unused instances if someone asks for more price they will get it)
+(use cases : used for interrupted workloads so even ec2 failure will be not so impacted as they are already used ones)
+• Dedicated Hosts: We book an entire building of the resort(we get the whole server ),dedicated instance similar to dedicated host but you can't control like you do in dedicated hosts
+• Capacity Reservations: you book a room for a period with full price even you don't stay in it
+
+----------------------------------------------------------------------------------------------------
+
+* Elastic ip is used to allocate fixed ip for instances.
+* private ips can only be access within the network, public ips can be accessed over the internet, so only public ip is accessed through ssh since it is public to aws network.
+
+---------------------------------------------------------------------------------------------------------------------
+
+Placement Groups to reduce latency
+• Sometimes you want control over the EC2 Instance placement strategy
+• That strategy can be defined using placement groups
+• When you create a placement group, you specify one of the following strategies for the group:
+• Cluster clusters instances into a low-latency group in a single Availability Zone
+• Spread spreads instances across underlying hardware (max 7 instances per group per AZ) - critical applications
+• Partition- spreads instances across many different partitions (which rely on different sets of racks) within an AZ. Scales to 100s of EC2 instances per group (Hadoop, Cassandra, Kafka)
+
+---------------------------------------------------------------------------------------------------------------------
+
+Elastic Network Interfaces (ENI)
+• Logical component in a VPC that represents a virtual network card,bound to specific availability zone.
+
+---------------------------------------------------------------------------------------------------------------------
+
+EC2 Hibernate:
+• The in-memory (RAM) state is preserved
+
+---------------------------------------------------------------------------------------------------------------------
+
+An EBS (Elastic Block Store) Volume is a network drive you can attach to your instances while they run
+• It allows your instances to persist data, even after their termination
+• They can only be mounted to one instance at a time (at the CCP level)
+• They are bound to a specific availability zone
+
+EBS types : SSD(low latency, high throughput) or HDD(high throughput)
+
+EBS Snapshots
+• Make a backup (snapshot) of your EBS volume at a point in time
+• Not necessary to detach volume to do snapshot, but recommended
+• Can copy snapshots across AZ(Availability zone) or Region
+
+
+AMI = Amazon Machine Image
+AMI are a customization of an EC2 instance
+• You add your own software, configuration, operating system, monitoring...
+• Faster boot / configuration time because all your software is pre-packaged
+• AMI are built for a specific region (and can be copied across regions)
+
+EBS Volume
+iol/io2 (4 GiB - 16 TiB):
+• Max PIOPS: 64,000 for Nitro EC2 instances & 32,000 for other
+If more than 32000 iops we need to use io1/io2
+
+EBS Multi-Attach - iol/io2 family
+• Attach the same EBS volume to multiple EC2 instances in the same AZ
+• Up to 16 EC2 Instances at a time
+
+Amazon EFS - Elastic File System
+• Managed NFS (network file system) that can be mounted on many EC2
+• EFS works with EC2 instances in multi-AZ
+*An Amazon EFS file system can have mount targets in only one VPC at a time.
+For Regional file systems, you can create a mount target in each Availability Zone in the AWS Region.
+For One Zone file systems, you create only a single mount target that is in the same Availability Zone as the file system
+*two types of mounts : mount via dns, mount via ip(can be used in cloud formation)
+
+---------------------------------------------------------------------------------------------------------------------------------
+• Vertical Scaling: Increase instance size (= scale up / down)
+• Horizontal Scaling: Increase number of instances (= scale out / in)
+• High Availability: Run instances for the same application across multi AZ
+
+Load Balancers are servers that forward traffic to multiple servers (e.g., EC2 instances) downstream eg: Elastic load balancers in aws
+*load balances checks the health status of ec2 instances before forwarding traffic, unhealthy instances are terminated and restarted(status 200 OK),(4** means client side errors),(5xx means application side errors, load balancer error 503 means at capacity)
+*can forward traffic to target groups(group of ec2 instances) based on url, hostname
+*stickiness enables request goes to the same instance
+*load balancer has a static host name use it, don't use the underlying ip
+
+1-Classic load Balancer (no longer used)
+
+2-Application Load Balancer
+*for http, https,websocket traffic,supports ssl , it is slow than nlb because it ha go through more psi layers than nlb
+• Fixed hostname (XXX.region.elb.amazonaws.com)
+• The application servers don't see the IP of the client directly
+• The true IP of the client is inserted in the header X-Forwarded-For
+• We can also get Port (X-Forwarded-Port) and proto (X-Forwarded-Proto)
+
+3-Network Load Balancer - Target Groups
+*for tcp traffic,supports ssl, can directly see the clients ip, it is fast
+• EC2 instances
+• IP Addresses - must be private IPs
+• Health Checks support the TCP, HTTP and HTTPS Protocols
+
+4-Gateway Load Balancer
+• Example: Firewalls, Intrusion Detection and Prevention Systems, Deep Packet Inspection Systems, payload manipulation, ..
+• Uses the GENEVE protocol on port 6081
+
+Sticky Sessions - Cookie Names
+1- Application-based Cookies
+• Cookie name must be specified individually for each target group
+• Don't use AWSALB, AWSALBAPP, or AWSALBTG (reserved for use by the ELB)
+• Cookie name is AWSALBAPP
+
+2-Duration-based Cookies
+• Cookie generated by the load balancer
+• Cookie name is AWSALB for ALB, AWSELB for CLB
+
+Cross zone load balancing is on by default for ALB and for NLB,GLB it is off by default and charged if it is on.
+
+• An SSL Certificate allows traffic between your clients and your load balancer to be encrypted in transit (in-flight encryption)
+• SSL refers to Secure Sockets Layer, used to encrypt connections
+• TLS refers to Transport Layer Security, which is a newer version
+• Nowadays, TLS certificates are mainly used, but people still refer as SSL
+• Public SSL certificates are issued by Certificate Authorities (CA)
+• Comodo, Symantec, GoDaddy, GlobalSign, Digicert, Letsencrypt, etc...
+• SSL certificates have an expiration date (you set) and must be renewed
+• You can manage certificates using ACM (AWS Certificate Manager)
+• HTTPS listener: Clients can use SNI (Server Name Indication) to specify the hostname they reach
+
+1- Classic Load Balancer (vI)
+• Support only one SSL certificate
+• Must use multiple CLB for multiple hostname with multiple SSL certificates
+2 -Application Load Balancer (V2)
+• Supports multiple listeners with multiple SSL certificates
+• Uses Server Name Indication (SNI) to make it work
+3- Network Load Balancer (V2)
+• Supports multiple listeners with multiple SSL certificates
+• Uses Server Name Indication (SNI) to make it work
+
+• Connection Draining - for CLB
+• Deregistration Delay - for ALB & NLB
+• Time to complete "in-flight requests" while the instance is de-registering or unhealthy
+• Stops sending new requests to the EC2 instance which is de-registering
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+The goal of an Auto Scaling Group (ASG) is to:
+• Scale out (add EC2 instances) to match an increased load
+• Scale in (remove EC2 instances) to match a decreased load
+• Ensure we have a minimum and a maximum number of EC2 instances running
+• Automatically register new instances to a load balancer
+• Re-create an EC2 instance in case a previous one is terminated (ex: if unhealthy)
+• ASG are free (you only pay for the underlying EC2 instances)
+* can scale based on cloud watch alarms
+
+----------------------------------------------------------------------------------------------------------------------------------
+*Database is the storage of data in structured manner
+*Realational(tables are related by primary keys satisfies ACID(atomicity(transaction complete),consistency(consistent after&before transaction),Isolation(multiple transactions can occur independently),Durability(successful transaction will be reflected even system fails)) properties) and non-relational
+*AWS provides RDS,Aurora relational databases
+
+RDS(Relational Database Service)(it uses SQL ) - Storage Auto Scaling , used for query processing data
+• Helps you increase storage on your RDS DB instance dynamically
+• When RDS detects you are running out of free database storage, it scales automatically
+• Avoid manually scaling your database storage
+• You have to set Maximum Storage Threshold (maximum limit for DB storage)
+
+RDS Read Replicas for read scalability
+• Up to 15 Read Replicas
+• Within AZ. Cross AZ or Cross Region
+• Replication is ASYNC, so reads are eventually consistent
+Note: The Read Replicas be setup as Multi AZ for Disaster Recovery (DR)
+
+RDS - From Single-AZ to Multi-AZ 
+• Zero downtime operation (no need to stop the DB)
+•Just click on "modify" for the database
+• The following happens internally:
+• A snapshot is taken
+• A new DB is restored from the snapshot in a new A7
+• Synchronization is established between the two databases
+
+RDS can have unto 15 read replicas
+
+RDS vs. RDS Custom
+• RDS: entire database and the OS to be managed by AWS(ssh not accessible)
+• RDS Custom: full admin access to the underlying OS and the database(ssh accessible)
+
+Aurora DB Cluster : compatible for PostgreSQL/mysql, seperation of storage and compute , less maintenance ,more flexibility
+Writer Endpoint-Pointing to the master
+Reader Endpoint-Connection Load Balancing(auto scaling of read replicas)
+* can make secondary db in other area as primary one in case of primary failure
+
+Global Aurora -Typical cross-region replication takes less than 1 second and gives unto 16 db read instances
+
+Aurora Machine Learning
+• Enables you to add ML-based predictions to your applications via SOL
+• Simple, optimized, and secure integration between Aurora and AWS ML services
+Supported services
+• Amazon SageMaker (use with any ML model)
+• Amazon Comprehend (for sentiment analysis)
+
+Aurora Backups
+.
+ -Automated backups
+ -Manual DB Snapshots
+
+. RDS & Aurora Restore options from S3 backups
+
+. Aurora Database Cloning(Create a new Aurora DB Cluster from an existing one
+
+Amazon RDS Proxy
+. It is used to minimize and pool connections on RDS database instance.
+• Improving database efficiency by reducing the stress on database resources (e.g., CPU, RAM) and minimize open connections (and timeouts)
+• Reduced RDS & Aurora failover time by up 66%
+• Enforce IAM Authentication for DB, and securely store credentials in AWS Secrets Manager
+• RDS Proxy is never publicly accessible (must be accessed from VPC)
+
+ElastiCache - Redis & Memcached (it is a in memory database)(Requires some application code changes to be leveraged)(stores key value pairs)
+ElastiCache supports IAM Authentication for Redis(Redis Auth)(multi az,read replicas)
+Memcached
+• Supports SASL-based authentication (advanced)
+Redis sorted sets to make sure the the rankings follow
+RDS cloning is the fastest duplication process
+
+Amazon DynamoDB - Summary
+• AWS proprietary technology, managed serverless NoSQL database, millisecond latency
+• Capacity modes: provisioned capacity with optional auto-scaling or on-demand capacity
+• Can replace ElastiCache as a key/value store (storing session data for example, using TTL feature)
+• Highly Available, Multi AZ by default, Read and Writes are decoupled, transaction capability
+• DAX(Dynamodb accelerator) cluster for read cache, microsecond read latency, in-memory cache for dynamodb that delivers 10x performance improvement
+• Security, authentication and authorization is done through lAM
+• Event Processing: DynamoDB Streams to integrate with AWS Lambda, or Kinesis Data Streams
+• Export to S3 without using RCU within the PIT window, import from S3 without using WCU , Great to rapidly evolve schemas
+*delete on expiration is allowed
+*dynamodb streams are used to replicate the tables for high availability, disaster recovery
+*dynamodb data can be exported or imported from s3
+*RCU and WCU can be set separately and can enable autoscaling seperately
+
+DocumentDB
+• Document DB is the same for MongoDB (which is a NoSQL database)
+• MongoDB is used to store, query, and index JSON data
+• Fully Managed, highly available with replication across 3 AZ Similar "deployment concepts" as Aurora
+• DocumentDB storage automatically grows in increments of 10GB
+• Automatically scales to workloads with millions of requests per seconds
+
+Amazon Neptune is Fully managed graph database and A popular graph dataset would be a social network(multi az,upto 15 read replicas)
+
+Amazon Keyspaces (for Apache Cassandra) Apache Cassandra is an open-source NoSQL distributed database uses CQL(cassandra query language)(auto scaling read replicas)
+
+Amazon QLDB : QLDB stands for "Quantum Ledger Database", it is A ledger is a book recording financial transactions(immutable i.e.,unchangeable)
+
+Amazon Timestream is Fully managed, fast, scalable, serverless time series database(autoscaling)
+------------------------------------------------------------------------------
+
+Amazon Route 53
+• A highly available, scalable, fully managed and Authoritative DNS
+• Authoritative = the customer (you)
+can update the DNS records
+• Route 53 is also a Domain Registrar
+
+Route 53 - Records contains
+• Domain/subdomain Name - e.g. example.com
+• Record Type - e.g., A or AAAA
+• Value - e.g, 12.34.56.78(ip address) ( it can be viewed from cloudshell by 'nslookup domainname' or dig command)
+
+
+• A - maps a hostname to IPV4
+• AAAA - maps a hostname to IPv6
+• CNAME - maps a hostname to another hostname
+. Alias - Points a hostname to an AWS Resource, You cannot set an ALIAS record for an EC2 DNS name, 
+TTL is set by default for alias and domain apex(example.com) can be used as alias to route but not CNAME
+• The target is a domain name which must have an A or AAAA record
+• Can't create a CNAME record for the top node of a DNS namespace (Zone
+Apex) Example: you can't create for example.com, but you can create for www.example.com
+• NS - Name Servers for the Hosted Zone
+• Control how traffic is routed for a domain
+
+Route 53 - Hosted Zones
+• A container for records that define how to route traffic to a domain and its subdomains (its not free) two types public hosted zones and private hosted zones
+
+Route 53 - Records TTL (Time To Live) Will cache the result for The TTL of the record (even though you change the ip in the route 53 record until the TTL expires the same ip is routed)
+
+Health Checks:
+Simple - route to single resource
+Weighted - route to high weighed first  and so on
+Latency -route to closest resource region
+Failover - route to primary, if health check fails at primary route to secondary
+Geolocation -route to the exact location specified
+Geoproximity - route the traffic to the region according to bias, we can shift traffic from one regions to another region by increasing the bias
+Ip-based routing - based on clients ip address
+Multi-value : when routing traffic to multiple resources if healthy
+
+*Calculated health check is the combination of child health checks
+
+------------------------------------------------------------------------------
+
+Elastic Beanstalk - Overview
+• It uses all the component's we've seen before: EC2, ASG, ELB, RDS, ...
+• Managed service
+• Automatically handles capacity provisioning, load balancing, scaling, application health monitoring, instance configuration,.
+• Just the application code is the responsibility of the developer
+
+------------------------------------------------------------------------------
+
+Amazon S3 allows people to store objects (files) in "buckets" (directories) , it is a global service
+• Buckets must have a globally unique name (across all regions all accounts)
+• Max s3 Object Size is 5TB (5000GB) (use multi-part upload)
+*Individual Amazon S3 objects can range in size from a minimum of 0 bytes to a maximum of 5 TB.
+*The largest object that can be uploaded in a single PUT is 5 GB
+* Iam user to access s3 bucket, attach iam user policy to allow access to s3 bucket
+* other user to access s3 bucket, attach the respected policy to allow for s3 bucket(eg for cross account attach allow cross account policy)
+* for EC2 instance to access s3 bucket, attach ec2 instance role to EC2 to access s3 bucket
+
+Amazon S3 - Replication (Notes) versioning needs to be activated
+• After you enable Replication, only new objects are replicated
+• Optionally, you can replicate existing objects using S3 Batch Replication
+• There is no "chaining" of replication
+. delete marker will not be replicated(replication can be cross az)
+• If bucket I has replication into bucket 2, which has replication into bucket 3
+• Then obiects created in bucket I are not replicated to bucket 3
+* There is versioning which need to be enabled according to use.(existing files have null version)
+*There are different types of storage tiers(classes) and lifecycle roles need to be created for changing between classes automatically.
+*satandard,intelligent,glacier the data access rate will be reduced upon going farther in storage tiers and cost is reduced
+
+*The S3 requester must be authenticated in AWS (cannot be anonymous) (can be used to share large datasets)
+*S3 Event of sqs,sns,lambda , we define resource access policies for sqs,sns,lambda
+*S3 Event Notifications with Amazon EventBridge: Advanced filtering options with JSON rules (metadata, object size, name..),Multiple Destinations - ex Step Functions, Kinesis Streams/Firehose..
+*S3 performance increases by multi part upload(for >100mb files) , byte range fetches(download by parts parallelly),s3 tranfer acceleration increases by using aws edge location(through public network to aws edge then through private newtwork to the aws account)
+*using s3 select will increases the retrieval rate
+• You can use S3 Inventory to get object list and use S3 Select to filter your objects
+* s3 batch operations used to Perform bulk operations on existing S3 objects with a single request, example:Modify object metadata & properties,Copy objects between S3 buckets,Encrypt un-encrypted objects,Modify ACLs, tags,Restore objects from S3 Glacier,Invoke Lambda function to perform custom action on each object
+
+s3 encryption:
+* SSE-S3 : Encryption using keys handled, managed, and owned by AWS
+* SSE-KMS : Encryption using keys handled and managed by AWS KMS (Key Management Service)(included in header) for decryption you have do api call for kms key which may cause throttling
+*SSE-C : Server-Side Encryption using keys fully managed by the customer outside of AWS, Amazon S3 does NOT store the encryption key (key is passed through https header)
+*Client Side Encryption : Use client libraries such as Amazon S3 Client Side Encryption Library,Clients must encrypt and decrypt data themselves to s3 & from s3
+*Encryption in transit (SSL/TLS) : HTTP Endpoint - non encrypted,HTTPS Endpoint - encryption in flight
+*Force Encryption in Transit aws:SecureTransport which is defined in the policy attached to s3
+
+* Cross-Origin Resource Sharing (CORS) : Web Browser based mechanism to allow requests to other origins while visiting the main origin,The requests won't be fulfilled unless the other origin allows for the requests, using CORS Headers (example: Access-Control-Allow-Origin)
+
+*To use MFA Delete, Versioning must be enabled on the bucket, Only the bucket owner (root account) can enable/disable MFA Delete
+
+S3 Access Logs: Warning
+• Do not set your logging bucket to be the monitored bucket
+• It will create a logging loop, and your bucket will grow exponentially
+and then amazon athena is used to run server less analytics on top of the log files
+
+*pre signed urls are used to temporarily access one specific file, the url is created by owner and shared to the target user,so he can get that object eg: Allow only logged-in users to download a premium video from your S3 bucket
+
+S3 Glacier Vault Lock
+• Adopt a WORM (Write Once Read Many) model
+S3 Object Lock (versioning must be enabled)
+• Adopt a WORM (Write Once Read Many) model
+• Block an object version deletion for a specified amount of time
+• Retention mode - Compliance:Object versions can't be overwritten or deleted by any user, including the root user,Objects retention modes can't be changed, and retention periods can't be shortened
+• Retention mode - Governance:Most users can't overwrite or delete an object version or alter its lock settings,Some users have special permissions to change the retention or delete the object
+• Retention Period: protect the object for a fixed period, it can be extended
+• Legal Hold:protect the object indefinitely, independent from retention period
+
+• Access Points simplify security management for S3 Buckets
+• Each Access Point has: its own DNS name (Internet Origin or VPC Origin),an access point policy (similar to bucket policy) - manage security at scale
+
+*Use AWS Lambda Functions to change the object before it is retrieved by the caller application
+
+------------------------------------------------------------------------------
+
+AWS CloudFront
+• Content Delivery Network (CDN), Improves read performance, content is cached at the edge(edge will be used and it has only public access to the aws resources)
+*s3 bucket is secured by OAC(origin access control) and changing access policy
+*restriction to geo location can be set to edge location
+1. Price Class All: all regions - best performance
+2. Price Class 200: most regions, but excludes the most expensive regions
+3. Price Class 100: only the least expensive regions
+cache invalidation is used to refresh some part of cache to get the updated data
+
+• Unicast IP: one server holds one IP address
+• Anycast IP: all servers hold the same IP address and the client is routed to the nearest one
+AWS Global Accelerator Works with Elastic IP, EC2 instances, ALB, NLB, public or private
+it routes traffic to the ec2 instance we give more weight
+
+------------------------------------------------------------------------------------------------
+
+AWS Snow Family
+• Highly-secure, portable devices to collect and process data at the edge(corner locations), and migrate data into and out of AWS (the data must be s3 compatible)
+• Data migration:Snowcone(and snowcone ssd)(it comes with a data sync agent bundled in it already)(storage capacity 8 TB HDD 14 TB SSD),Snowball Edge(storage optimized)(80 TB usage),Snowmobile (truck)(<100PB(petabytes))
+• Edge computing: Snowcone ,Snowball Edge(pre process the data while its being transferred to snowball and transfers 100s of tb of data fast)
+*AWS OpsHub (a software you install on your computer / laptop) to manage your Snow Family Device(through cli its difficult so ophub came)
+*Snowball cannot import to Glacier directly,You must use Amazon S3 first, in combination with an S3 lifecycle policy
+
+Amazon FSx - Overview
+• Launch 3rd party high-performance file systems on AWS
+Fully managed services like : (similar to RDS sql,postgresql etc.... but file systems)
+FSx for Lustre : High Performance Computing (HPC) for machine learning, Seamless integration with S3 i.e, can read from s3 and write output back to s3
+FS× for NetApp ONTAP : works on different OS,Point-in-time instantaneous cloning (helpful for testing new workloads),compatible with nfs,smb,iscsi
+FSx for Windows : Can be mounted on Linux EC2 instances, multi AZ,s3 backup daily for disaster recovery
+FSx for OpenZFS : Point-in-time instantaneous cloning (helpful for testing new workloads)
+scratch file systems and persistent file systems(pfs : long term storage and data replicated within same AZ)
+
+*AWS gateway is the bridge between on premises and s3 on aws(AWS is pushing for "hybrid cloud" i.e.,Part of your infrastructure is on the cloud,Part of your infrastructure is on-premises)
+.Amazon S3 File Gatewav: Store files as objects in Amazon S3, with a local cache for low-latency access to your most recently used data.
+• Amazon FSx File Gateway: Low-latency on-premises access to fully managed, highly reliable, and virtually unlimited Windows file shares provided by Amazon FS for Windows File Server,nfs or smb protocol, authentic access to files using microsoft AD.
+• Volume gateway : Block storage in Amazon S3 with point-in-time backups as Amazon EBS snapshots.
+• Tape gateway :Back up your data to Amazon s3 and archive in Amazon s3 glacier using your existing tape-based processes,iSCSI compatible interface
+
+AWS Transfer Family
+• A fully-managed service for file transfers into and out of Amazon s3 or Amazon EFS using the FTP protocol
+• FTP (File Transfer Protocol (FTP)),FTPS (File Transfer Protocol over SSL (FTPS)),SFTP (Secure File Transfer Protocol (SFTP))
+
+AWS DataSync ,Move large amount of data on scheduled time to and from for onpremises or among aws services, File permissions and metadata are preserved (NFS POSIX, SMB...),can efficiently migrate the data from on premises to s3 , can migrate large data from s3 to nfs
+
+ec2-blocks, efs - file system,s3 -objects 
+
+Storage Comparison
+• S3: Object Storage
+• S3 Glacier: Object Archival
+• EBS volumes: Network storage for one EC2 instance at a time
+• Instance Storage: Physical storage for your EC2 instance (high IOPS)
+• EFS: Network File System for Linux instances, POSIX filesystem
+• FSx for Windows: Network File System for Windows servers
+• FSx for Lustre: High Performance Computing Linux file system
+• FSx for NetApp ONTAP: High OS Compatibility
+• FSx for OpenZFS: Managed ZFS file system
+• Storage Gateway: S3 & FSx File Gateway, Volume Gateway (cache & stored), Tape Gateway
+• Transfer Family: FTP, FTPS, SFTP interface on top of Amazon S3 or Amazon EFS
+• DataSync: Schedule data sync from on-premises to AWS, or AWS to AWS(file permissions & meta data are preserved)
+• Snowcone / Snowball / Snowmobile: to move large amount of data to the cloud, physically
+• Database: for specific workloads, usually with indexing and querying
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SQS(simple queue service) used to decouple applications, contains producer sends message to sqs using sdk api(sendMessageAPI), consumer polls form messages
+*Unlimited throughput,unlimited number of messages in queue,Default retention of messages: 4 days, maximum of 14 days,Low latency,Limitation of 256KB per message 
+*consumer polls for messages(unto 10 messages) and insert them in rds and deletes from sqs, can have multiple consumers, standard queue has at least once delivery
+*auto scaling can be enable based on cloudwatch metric attached to sqs which trigger a alarm that triggers asg
+*purge the queue to delete all the messages
+*message visibility timeout is the time in which the message is invisible while its being processed,after this time the message will again be available, if it is low we get duplicates
+*long polling allows consumers to wait for messages, it reduces api calls, increase the efficiency and latency of your application.
+*FIFO queue = First In First Out (ordering of messages in the queue),exactly one send capability,limited to 300 msgs without batching & 3000 msgs with batching.
+*can have groupeid similar to partition key in kinesis and each group of messages can have a different consumers
+
+SNS(simple notification service) (publish subscribe model), producer send messages to sns topic, consumers(subscribers) who subscribes to sns will get all the messages, access policies
+(sns can have many subscribers like email, http endpoints,sqs,lambda etc,. not kinesis data streams)
+*sns fifo can have only sqs subscribers, to allow ordering use sqs fifo with high throughput
+SNS - Message Filtering : JSON policy used to filter messages sent to SNS topic's subscriptions,If a subscription doesn't have a filter policy, it receives every message
+
+Kinesis makes it easy to collect, process, and analyze streaming data in real-time
+
+Kinesis Data Streams: capture, process, and store data streams
+• kinesis data streams is made of n shards which results in max n consumers,retention period of 1 to 365 days
+.It has 2 modes provisioned(we need to give no of shards to generate) and on-demand mode(it automatically manages the capacity produces shards)
+• Once data is inserted in Kinesis, it can't be deleted (immutability)
+.each shard allows 1mb/s incoming data and 2mb/s outgoing data
+• Data that shares the same partition key goes to the same shard (ordering)(partition key creates a hash on shard, even the partition key is different but going to the same shard means kinesis created a hash for that partitionkey in that shard and all the data related to it goes to the same shard thus maintaining order)
+# PRODUCER (in cli or cloud shell)
+aws kinesis put-record --stream-name test
+--partition-key user --data "user signup"
+-cli-binary-format raw-in-base64-out
+
+aws kinesis put-record --stream-name test
+--partition-key user1 --data "user signup"
+
+# CONSUMER
+# describe the stream of traffic 
+aws kinesis describe-stream --stream-name test
+
+# Consume some data
+aws kinesis get-shard-iterator --stream-name test
+-shard-id shardId-000000000000
+--shard-iterator-type TRIM HORIZON
+
+aws kinesis get-records --shard-iterator : it gives the data from the shard and the next shard iterator id at end
+
+*use KCS (kinesis client library) to produce & consume data from kDS, to have a good api calls
+
+Kinesis Data Firehose: load data streams from different sources(mostly kds) and stores batches into AWS data stores (destinations in aws are : s3,amazon reshift(copy through s3),amazon open search or to custom http endpoint destination or there are also 3rd party destinations) and failed data can be sent to s3
+	-custom data transformation using aws lambda
+	- it is near real time whereas kds is real time
+	- pay for the data flows through, does not have replay capability but kds have replay capability
+	-buffer size and buffer interval is used to wait until the buffer filled and then send the data to destination
+
+• Kinesis Data Analytics: analyze data streams with SQL or Apache Flink
+• Kinesis Video Streams: capture, process, and store video streams
+
+*amazon MQ is a managed message broker service used for open protocols like MQTT,AMQP,STOMP,Openwire and WSS, multi az, has both sqs & sns features
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Docker is a software development platform to deploy apps,apps are packaged in containers that can be run on any OS
+Docker Containers Management on AWS:
+• Amazon Elastic Container Service (Amazon ECS) : Amazon's own container platform
+• Amazon Elastic Kubernetes Service (Amazon EKS) : Amazon's managed Kubernetes (open source)
+• AWS Fargate : Amazon's own Serverless container platform , Works with ECS and with EKS
+• Amazon Elastic Container Registry(ECR) : contains repos that Store container images
+
+Amazon ECS - EC2 Launch Type:
+• ECS = Elastic Container Service
+• Launch Docker containers on AWS = Launch ECS Tasks on ECS Clusters
+• EC2 Launch Type: you must provision & maintain the infrastructure (the EC2 instances)
+• Each EC2 Instance must run the ECS
+Agent to register in the ECS Cluster
+• AWS takes care of starting / stopping containers
+
+Amazon ECS - Fargate Launch Type
+• Launch Docker containers on AWS
+• You do not provision the infrastructure (no EC2 instances to manage)
+• It's all Serverless!
+• You just create task definitions
+• AWS just runs ECS Tasks for you based on the CPU / RAM you need
+• To scale, just increase the number of tasks. Simple - no more EC2 instances
+
+
+Amazon ECS - IAM Roles for ECS:
+EC2 Instance Profile (EC2 Launch Type only):
+• Used by the ECS agent
+• Makes API calls to ECS service
+• Send container logs to CloudWatch Logs
+• Pull Docker image from ECR
+ECS Task Role:
+• Allows each task to have a specific role
+• Use different roles for the different ECS Services you run
+. task role is defined in the task definition
+*Amazon ECS can be used for Load balancer integration
+Amazon ECS - Data Volumes (EFS)
+• Mount EFS file systems onto ECS tasks
+• Works for both EC2 and Fargate launch types
+• Tasks running in any AZ will share the same data in the EFS file system
+• Fargate + EFS = Serverless
+• Use cases: persistent multi-AZ shared storage for your containers
+**Amazon S3 cannot be mounted as a file system
+
+*we have to create a ECS cluster in which we have to select whether ec2 instance type of fargate type
+*Next we need to create a task definition to run a container from the image and iam role need to be attached if we want to provide permission to access aws resources and we need to specify the no of vcpus and memory requried
+*next we need to create a service to deploy our container, we can add a load balancer here and no of tasks to run and deploy and our application is ready.
+*for fargate the above steps are fine, but for ec2 instance type we need to create autoscaling group while creating ec2 instance type it will ask for the requirements, like instancetype, server type,min-max-desired no of instances for asg, but for fargate it will automatically provision the req resources.
+*ECS auto scaling is used to increase the no of tasks automatically which will be easy for fargate type,which will be scaled upon cloudwatch metric if the cpu usage is above threshold and it is not same as ec2 instance autoscaling which is done by asg, but we can service auto scaling for this type(cpu ram)
+
+Amazon EKS Overview
+• Amazon EKS = Amazon Elastic Kubernetes Service
+• It is a way to launch managed Kubernetes clusters on AWS
+• Kubernetes is an open-source system for automatic deployment, scaling and management of containerized (usually Docker) application
+• It's an alternative to ECS, similar goal but different API
+• EKS supports EC2 if you want to to deploy worker nodes or Fargate to deploy serverless containers
+• Use case: if your company is already using Kubernetes on-premises or in another cloud, and wants to migrate to AWS using Kubernetes
+• Kubernetes is cloud-agnostic (can be used in any cloud - Azure, GCP...)
+* EKS worker nodes consists of EKS pods(similar to EC2 tasks)
+*EKS support managed node groups, self-managed node groups,aws fargate
+
+AWS App Runner
+• Fully managed service that makes it easy to deploy web applications and APIs at scale
+• No infrastructure experience required,Start with your source code or container image
+• Automatically builds and deploy the web app,Automatic scaling, highly available, load balancer, encryption,vpc support etc.,
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Virtual Private Cloud (VPC):
+
+• You can have multiple VPCs in an AWS region (max. 5 per region - soft limit)
+• Max. CIDR per VPC is 5, for each CIDR:
+• Min. size is /28 (16 IP addresses) and Max. size is /16 (65536 IP addresses)
+• Because VPC is private, only the Private v4 ranges are allowed:
+• 10.0.0.0 - 10.255.255.255 (10.0.0.0/8)
+• 172.16.0.0 - 172.31.255.255 (172.16.0.0/12)
+• 192.168.0.0 - 192.168.255.255 (192.168.0.0/16)
+• Your VPC CIDR should NOT overlap with your other networks (e.g., corporate)
+
+*CIDR(Classless Inter Domain Routing) : a method for allocating ips
+*CIDR consists of 2 components, base ip and subnet mask
+*The Subnet Mask basically allows part of the underlying IP to get additional next values from base IP
+(every octet from 0-255)(2 to the power of (32-subnetmask) ips) subtract 5 that amazon holds , remaining are the ips for vac
+• /32 - no octet can change
+• /24 - last octet can change(0-255)
+• 16 - last 2 octets can change
+/8 - last 3 octets can change
+
+VPC - Subnet (IPV4) - subnet is a subrange of ipv4 addresses within your vpc (unto 200 per vpc)
+• AWS reserves 5 IP addresses (first 4 & last I) in each subnet
+• These 5 IP addresses are not available for use and can't be assigned to an
+EC2 instance
+• Example: if CIDR block 10.0.0.0/24, then reserved IP addresses are:
+• 10.0.0.0 - Network Address
+• 10.0.0.1 I - reserved by AWS for the VPC router
+• 10.0.0.2 - reserved by AWS for mapping to Amazon-provided DNS
+• 10.0.0.3 - reserved by AWS for future use
+• 10.0.0.255 - Network Broadcast Address. AWS does not support broadcast in a VPC, therefore the address is reserved
+
+Internet Gateway(IGW) allow resources in a VPC connect to the Internet.
+• Must be created separately from a VPC
+• One VPC can only be attached to one IGW and vice versa
+• Internet Gateways on their own do not allow Internet access.Route tables must also be edited!
+
+Route tables contains a set of rules,called routes, that are used to determine where network traffic is directed.
+Route tables , we must associate subnets, inorder to provide internet
+
+Bastion Hosts
+• We can use a Bastion Host to SSH into our private EC2 instances
+• The bastion is in the public subnet which is then connected to all other private subnets
+• Bastion Host security group must allow inbound from the internet on port 22 from restricted CIDR, for example the public CIDR of your corporation
+• Security Group of the EC2 Instances must allow the Security Group of the Bastion Host, or the private IP of the Bastion host
+
+NAT = Network Address Translation instance (they are going away)
+• Allows EC2 instances in private subnets to connect to the Internet
+• Must be launched in a public subnet
+• Must disable EC2 setting: Source / destination Check
+• Must have Elastic IP attached to it
+• Route Tables must be configured to route traffic from private subnets to the NAT
+
+NAT Gateway (used mostly)
+• NATGW is created in a specific Availability Zone, uses an Elastic IP
+• Can't be used by EC2 instance in the same subnet (only from other subnets)
+• Requires an IGW (Private Subnet => NATGW => IGW)
+
+Network Access Control List (NACL)
+• NACL are like a firewall which control traffic from and to subnets
+• One NACL per subnet, new subnets are assigned the Default NACL(it allows in and out everything as it is defaultly associated to subnets)
+You define NACL Rules:
+• Rules have a number (1-32766), higher precedence with a lower number
+• The last rule is an asterisk (*) and denies a request in case of no rule match
+• AWS recommends adding rules by increment of 100
+• Newly created NACLs will deny everything(create NACL and change rules, do not change rules on default NACL for best practice)
+*NACL is stateles(it evaluates inbound and outbound rules)
+*security groups are stateful(if it evaluates and allows inbound rules, then the outbound is allowed(authorized automatically) irrespective of outbound rules and vice versa)
+*If there are network issues then after security groups we need to check NACL also
+
+Ephemeral Ports
+• Clients connect to a defined port, and expect a response on an ephemeral port
+
+VPC Peering
+• Privately connect two VPCs using AWS' network and Make them behave as if they were in the same network
+• Must not have overlapping CIDRs and VPC Peering connection is NOT transitive
+• You must update route tables in each VPC's subnets to ensure EC2 instances can communicate with each other(add cidr ip of 1st vpc in 2nd & vice versa)
+• You can create VPC Peering connection between VPCs in different AWS accounts/regions
+• You can reference a security group in a peered VPC (works cross accounts - same region)
+
+VPC Endpoints (AWS PrivateLink)
+• Every AWS service is publicly exposed (public URL)
+• VPC Endpoints (powered by AWS PrivateLink) allows you to connect to AWS services using a private network instead of using the public Internet
+• They remove the need of IGW, NATGW, to access AWS Services
+Two types:
+• Interface Endpoints (powered by PrivateLink) : Provisions an ENI (private IP address) as an entry point (must attach a Security Group),Supports most AWS services
+• Gateway Endpoints : Provisions a gateway and must be used as a target in a route table (does not use security groups),Supports only both S3 and DynamoDB
+*gateway is preferred for s3 & dynamodb as it is FREE unless we are on onpremises
+
+VPC Flow Logs Capture information about IP traffic going into your interfaces:
+• VPC flow logs,Subnet Flow Logs,Elastic Network Interface (ENI) Flow Logs
+• Helps to monitor & troubleshoot connectivity issues
+• Query VPC flow logs using Athena on S3 or CloudWatch Logs Insights
+
+AWS Site-to-Site VPN:(use one tunnel for outgoing and incoming)
+Virtual Private Gateway (VGW)
+• VPN concentrator on the AWS side of the VPN connection, will use public network but it will be encrypted as we use VPN
+• VGW is created and attached to the VPC from which you want to create the Site-to-Site VPN connection
+• Possibility to customize the ASN (Autonomous System Number)
+Customer Gateway (CGW)
+• Software application or physical device on customer side of the VPN connection
+Important step: enable Route Propagation for the Virtual Private Gateway in the route table that is associated with your subnets
+*ICMP protocol is used to allow ping traffic, so allow icmp traffic in inbound rules of sg of corresponding ec2
+
+*AWS VPN CloudHub Provide secure communication between multiple, sites, if you have multiple VPN connections(sites can also communicate with each other, just we need to enable multiple connection in VGW at VPC)
+
+*Direct Connect (DX) Provides a dedicated private connection from a remote network to your VPC, direct connect on customer side is connected to the Virtual Private Gateway(VGW),to access private resources Private Virtual Interface(PIF) is used by VGW and to public resources public virtual interface.
+*Direct Connect Gateway: If you want to setup a Direct Connect to one or more VPC in many different regions (same account), you must use a Direct Connect Gateway,which will be connected to VGW of the corresponding VPC's
+*Direct connect is not encrypted as it is private network, we can use DC+VPN to add extra level of security by encryption
+*For maximum resiliency of workloads, we create two Direct connects for each customer side, so one down other will be there and for high resiliency one is fine.
+*it will take more than a month to set up all these and can use sitetosite vpn connection as a backup in case direct connect fails
+*Hosted Direct Connect connection supports 50Mbps, 500Mbps, up to 10Gbps,it supports more than the Dedicated direct connect
+
+Transit Gateway
+• For having transitive peering between thousands of VPC and on-premises, hub-and-spoke (star) connection
+• Regional resource, can work cross-region,Share cross-account using Resource Access Manager (RAM)
+• You can peer Transit Gateways across regions
+• Route Tables in transit gateway to limit which VPC can talk with other VPC
+• Works with Direct Connect Gateway to connect customer gateway to multiple vpcs, VPN connections to connect customer gateway vpn connection to the transit gateway which in turn connect to the vpc
+• Supports IP Multicast (not supported by any other AWS service)
+ECMP = Equal-cost multi-path routing
+• Routing strategy to allow to forward a packet over multiple best path
+• Use case: create multiple Site-to-Site VPN connections to increase the bandwidth of your customer connection to AWS(2 tunnels are created one for one site-site connection in which one for incoming traffic and other for outgoing traffic)
+
+VPC- Traffic Mirroring allows you to capture and inspect network traffic, we have to specify source ENI(which eni we want to monitor the traffic) and destination(either EMI or ELB to get traffic)
+
+** IPv4 cannot be disabled for your VPC and subnets, but we can assign public ipv6 for instances, if we can't create a instance in a subnet or vpc that means there is no available ipv4 in subnet, so we have to change the CIDR block of subnet.
+
+*Egress only Internet Gateway(EIGW) is similar to NAT gateway(used for IPv4) but it is only used for IPv6 of instances of private subnets to get internet connection, outbound through the EIGW is sent outside but the resulting traffic is not allowed to the instances of the private subnet(then how the result will be accessed for ipv6 outbound of private subnet?)
+
+Networking costs:
+*free in traffic to regions,ec2 to ec2 within same az free over private ip,ec2 to another ec2 of different az using private ip to connect is half price less than the use of public ip, ec2 to another region ec2 will also costs(0.02 per gb)
+• Use Private IP instead of Public IP for good savings and better network performance,Use same AZ for maximum savings (at the cost of high availability)
+*creation of replicas over same az is free, but over different az cost 1cent per gb
+• Egress traffic: outbound traffic (from AWS to outside), Egress cost is high aws Cloud
+• Ingress traffic: inbound traffic - from outside to DB Query 100 MB AWS (typically free)
+• Try to keep as much Database internet traffic within AWS and less egress traffic to minimize costs 
+*s3 ingress free, but to download from s3 costs, if we use transfer acceleration(use of edge location) faster data access and costs, but if we use cloudfront(s3->CF->internet) slightly cheaper than above and also caching allowed to get faster access 
+
+To protect network on AWS, we've seen
+• Network Access Control Lists (NACLs)
+• Amazon VPC security groups
+• AWS WAF (protect against malicious requests)
+• AWS Shield & AWS Shield Advanced
+• AWS Firewall Manager (to manage them across accounts)
+*AWS Network Firewall Protect your entire Amazon VPC from layer 3 to layer 7,internally it uses the AWS Gateway load balancer, traffic can be filtered by ips,ports and ispected and send logs to s3,cloudwatch,firehose
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Serverless(FaaS - function as a service)
+
+• Serverless does not mean there are no servers...it means you just don't manage / provision / see them
+• Serverless in AWS : AWS Lambda,DynamoDB,AWS Cognito,AWS API Gateway,Amazon S3,AWS SNS & SOS,AWS Kinesis Data Firehose,Aurora Serverless,Step Functions,Fargate
+
+Amazon Lambda (event driven function(triggered by some event))
+• Virtual functions - no servers to manage!
+• Limited by time - short executions,Run on-demand,Scaling is automated!
+*it is used for serverless CRON job(if you want to trigger lambda every 1 hour by the clouwatch event bridge or some schedule to trigger a lambda)
+*lambda snapstart, When enabled, function is invoked from a pre-initialized state (no function initialization from scratch), improves the lambda function performance by 10x.
+
+CloudFront provides two types: CloudFront Functions(javascript) & Lambda@Edge(nodejs/python works closely to users)
+• You don't have to manage any servers, deployed globally
+
+*lambda can only access the services within launched vpc
+*The Lambda function must be deployed in your VPC, because RDS Proxy(Improve scalability by pooling and sharing DB connections) is never publicly accessible
+
+API Gateway - Endpoint Types
+ Edge-Optimized (default): For global clients
+• Requests are routed through the CloudFront Edge locations (improves latency)
+• The API Gateway still lives in only one region
+Regional:
+• For clients within the same region
+• Could manually combine with CloudFront (more control over the caching strategies and the distribution)
+ Private:
+• Can only be accessed from your VPC using an interface VPC endpoint (ENI)
+• Use a resource policy to define access
+
+
+AWS Step Functions
+• Build serverless visual workflow to orchestrate your Lambda functions
+• Features: sequence, parallel, conditions, timeouts, error handling, ..
+• Can integrate with EC2, ECS, On-premises servers, API Gateway, SQS queues, etc...
+*supports human approval
+
+Amazon Cognito
+• Give users an identity to interact with our web or mobile application
+Cognito User Pools:
+• Sign in functionality for app users
+• Integrate with API Gateway & Application Load Balancer
+Cognito Identity Pools (Federated Identity):
+• Provide AWS credentials to users so they can access AWS resources directly
+• Integrate with Cognito User Pools as an identity provider
+•Cognito vs IAM: "hundreds of users", "mobile users", "authenticate with SAML"
+
+*Amazon SES(simple Email Service) is used to send emails(serverless).
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Amazon CloudWatch Metrics
+• CloudWatch provides metrics for every services in AWS and Metric is a variable to monitor (CPUUtilization, NetworkIn...), Metrics belong to namespaces
+• cloudwatch metric filter is used to filter based on logs and use the metric to trigger alarms
+• cloudwatch metric streams allows to send cloudwatch metrics in realtime into s3(through kdf) & 3rd party
+
+CloudWatch Logs
+• Log groups: arbitrary name, usually representing an application
+• Log stream: instances within application / log files / containers
+*cloudwatch logs insights, its a querying capability within cloudwatch logs
+
+*live tail is used to get logs stream continuously , can be used for debugging 
+
+*You need to run a CloudWatch agent on EC2 to push the log files you want Make sure IAM permissions are correct,The CloudWatch log agent can be setup on-premises too
+*cloudwatch logs agent is old and cloudwatch unified agent is new and send additional info like custom metric into cloudwatch
+
+CloudWatch Alarms
+• Alarms are used to trigger notifications for any metric and Various options (sampling, %, max, min, etc...)
+Alarm States:
+• OK
+• INSUFFICIENT DATA
+• ALARM
+Period:  Length of time in seconds to evaluate the metric
+CloudWatch Alarm Targets
+• Stop, Terminate, Reboot, or Recover an EC2 Instance
+• Trigger Auto Scaling Action
+• Send notification to SNS
+*CloudWatch Alarms are on a single metric and Composite Alarms are monitoring the states of multiple other alarms(by using OR,AND conditions)
+
+Amazon EventBridge (formerly CloudWatch Events)
+• Schedule: Cron jobs (scheduled scripts)
+• Event Pattern: Event rules to react to a service doing something
+• Trigger Lambda functions, send SQS/SNS messages...
+•use event bridge archive and replay feature for storing the data that use later on.
+
+CloudWatch Container Insights
+• Collect, aggregate, summarize metrics and logs from containers
+• Available for containers on Amazon Elastic Container Service (Amazon ECS),Amazon Elastic Kubernetes Services (Amazon EKS),Kubernetes platforms on EC2,Fargate (both for ECS and EKS)
+
+CloudWatch Lambda Insights
+• Monitoring and troubleshooting solution for serverless applications running on AWS Lambda
+
+CloudWatch Contributor Insights
+• Analyze log data and create time series that display contributor data.Find "Top-N" Contributors through CloudWatch Logs
+
+CloudWatch Application Insights
+• Provides automated dashboards that show potential problems with monitored applications, to help isolate ongoing issues
+
+AWS CloudTrail
+• Provides governance, compliance and audit for your AWS Account, CloudTrail is enabled by default!
+• Get an history of events / API calls made within your AWS Account by:Console,SDK,CLI, AWS Services
+• logs will only be for 90 days and have to configure to send logs to s3
+
+*AWS config can be used to monitor all the resources and add rules to resource to monitor any changes to the resource and make it non compliant and remediation also can be done
+
+**CloudWatch vs CloudTrail vs Config
+CloudWatch
+• Performance monitoring (metrics, CPU, network, etc...) & dashboards
+• Events & Alerting
+• Log Aggregation & Analysis
+CloudTrail
+• Record API calls made within your Account by everyone
+• Can define trails for specific resources
+• Global Service
+Config
+• Record configuration changes
+• Evaluate resources against compliance rules
+• Get timeline of changes and compliance
+
+----------------------------------------------------------------------------------------------------------------------------
+
+AWS Organizations
+• Global service that Allows to manage multiple AWS accounts
+• The main account is the management account and Other accounts are member accounts
+
+Security: Service Control Policies (SCP)
+• IAM policies applied to OU(Root Organizational Unit) or Accounts to restrict Users and Roles
+• They do not apply to the management account (full admin power)
+• Must have an explicit allow (does not allow anything by default - like IAM)
+
+IAM Conditions:
+• aws:SourceIp - restrict the client IP from which the API calls are being made
+• aws:RequestedRegion - restrict the region the API calls are made to
+• ec2:ResourceTag - restrict based on tags
+• aws:MultiFactorAuthPresent - to force MFA
+• s3:ListBucket permission applies to arn:aws:s3:::test  => bucket level permission
+• s3:GetObject, s3:PutObject, s3:DeleteObject applies to arn:awn:s3:::test/* => object level permission
+• aws:PrincipalOrgID - can be used in any resource policies to restrict access to accounts that are member of an AWS Organization
+
+IAM Roles vs Resource Based Policies
+• Cross account: attaching a resource-based policy to a resource (example: S3 bucket policy) OR using a role as a proxy
+• When you assume a role (user, application or service), you give up your original permissions and take the permissions assigned to the role
+• When using a resource-based policy, the principal doesn't have to give up his permissions
+• Supported by: Amazon S3 buckets, SNS topics, SQS queues, etc...
+Amazon EventBridge - Security
+• When a rule runs, it needs permissions on the target
+• Resource-based policy: Lambda, SNS, SQS, Cloud Watch Logs, API Gateway.. (e.g. Allow EventBridge)
+• IAM role: Kinesis stream, Systems Manager Run Command, ECS task..(attach IAM role)
+
+*permission boundary can be used to set the permission boundary to the users even the role gives all accesses, if we restrict in permission boundary then the user has no access
+*if we allow and deny in iam policy then deny will happens and if we do not specify allow or deny then also deny happens
+
+AWS AM Identity Center (successor to AWS Single Sign-On)
+• One login (single sign-on) for all your AWS accounts in AWS Organizations
+
+AWS IAM Identity Center Fine-grained Permissions and Assignments:
+Multi-Account Permissions
+• Manage access across AWS accounts in your AWS Organization
+• Permission Sets - a collection of one or more IAM Policies assigned to users and groups to define AWS access
+Application Assignments
+• SSO access to many SAML 2.0 business applications (Salesforce, Box, Microsoft 365, ...)
+• Provide required URLs, certificates, and metadata
+Attribute-Based Access Control (ABAC)
+• Fine-grained permissions based on users' attributes stored in IAM Identity Center Identity Store
+• Example: cost center, title, locale, ...
+• Use case: Define permissions once, then modify AWS access by changing the attributes
+
+What is Microsoft Active Directory (AD)?
+• Found on any Windows Server with AD Domain Services
+• Database of obiects: User Accounts, Computers, Printers, File Shares, Security Groups
+• Centralized security management, create account, assign permissions
+• Objects are organized in trees and A group of trees is a forest
+eg:domain controller has john login details and all the windows servers connected to domain controller can login john if they have valid details
+
+AWS Directory Services
+AWS Managed Microsoft AD
+• create your own AD in AWS, manage users locally, supports MFA
+• Establish "trust" connections with your on-premise AD
+AD Connector
+• Directory Gateway (proxy) to redirect to on-premise AD, supports MFA
+• Users are managed on the on-premise AD
+Simple AD
+• AD-compatible managed directory on AWS
+• Cannot be joined with on-premise AD
+
+IAM Identity Center - Active Directory Setup:
+Connect to an AWS Managed Microsoft AD (Directory Service)
+• Integration is out of the box
+Connect to a Self-Managed Directory
+• Create Two-way Trust Relationship using AWS Managed Microsoft AD and on-premises AD then connect IAM Identity center with AWS managed Microsoft AD.
+• Create an AD Connector (use AD connector as proxy to connect to on-premises AD)
+
+AWS Control Tower
+• Easy way to set up and govern a secure and compliant multi-account
+AWS environment based on best practices
+• AWS Control Tower uses AWS Organizations to create accounts
+Benefits:
+• Automate the set up of your environment in a few clicks
+• Automate ongoing policy management using guardrails
+• Detect policy violations and remediate them
+• Monitor compliance through an interactive dashboard
+
+AWS Control Tower - Guardrails
+• Provides ongoing governance for your Control Tower environment (AWS Accounts)
+• Preventive Guardrail - using SCP(Service Control Policies) (e.g., Restrict Regions across all your accounts)
+• Detective Guardrail - using AWS Config (e.g. identify untagged resources)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

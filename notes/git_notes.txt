@@ -1,0 +1,121 @@
+   Git
+
+------------------------------------------------
+scm(source code management)
+vcs(version control system)
+bit,github,gitlab clients
+
+git init : to initialize the repository to remote
+
+git branch new-branch : create a new branch
+
+git remote add origin remote-url : connect remote to pc
+
+git remote -v : to show the remote origins
+
+git remote remove origin : removes the origin
+
+git push origin new-branch: pushes the new branch to remote
+
+git checkout new-branch: change branch to newbranch
+
+git checkout -b new-branch : create your new branch and moves to it
+
+git branch -d new-branch : will delete the branch if it is merged or else throws warning, -D deletes even its not merged
+
+git push origin --delete new-branch or git push origin :new-local-repo : will delete new-branch remotely
+
+git status : status and the branch that we are working on
+
+git branch -m <new name> : to rename the local branch name , first we need to goto the respective branch and rename and then git push --set-upstream origin <new name> changes in remote also
+
+git branch -r : to view remote branches
+
+git branch -a : to view all branches
+
+git clone <remote path> : to clone repository from remote
+
+git add . or git add --all: go to the respective folder and enter command to add all the files to commit and then push
+
+git commit -m "any message " : commits the changes ,after the above command (adding -a to commit without adding i.e., staging step it tracks the changes and commit)
+
+git commit --amend -m "new commit message" : it used to change the commit message and old commit is replaced by a new one
+
+git push --force-with-lease origin EXAMPLE-BRANCH : it is used to force push a commit
+
+git push origin <branchname> : to push the committed changes to the remote branchname
+
+git push -u <remote(origin)> <branch name>: The -u flag creates a tracking reference for every branch that you successfully push onto the remote repository. The local branch you push is automatically linked with the remote branch. This allows you to use commands such as git pull without any arguments
+
+git merge <branchname> : merges the branch name we enter with the branch we are in
+
+git pull origin <branchname> : pulls the code from branchname to the pwd (combination of fetch and merge commands)
+
+git fetch origin : fetches all the change history from the branch-name we specify
+
+git merge origin : merge the branch-name we specify to the branch we are in
+
+
+git log : to view history of commits
+
+git log branch-name: history of commits on the branch-name
+
+[color "branch"]
+    local = yellow
+    remote = red
+    plain = normal
+
+git rebase <basebranch> <topicbranch> — which checks out the topic branch and rebase it onto the base branch (master) and then git checkout <base> and git merge <topic> to merge it
+
+similar to 'git checkout topic-branch' then 'git rebase base-branch' and then  'git checkout base-branch' next 'git merge topic-branch'
+
+git rebase --onto master server client : rebases only the client branch changes(other than common server changes) to the master branch and then we can merge the client with the master (https://git-scm.com/book/en/v2/Git-Branching-Rebasing) - link for rebase command
+
+git reset HEAD filename : to remove the file from the commit
+
+cat .gitignore : file that contains files to ignore
+
+git diff origin/master : showing the differences between our local master and origin/master (diff --git a/README.md b/README.md)
+
+git help --all : to display all commands and git command --help to display command details
+
+git cherry-pick <commit id> : Cherry picking in Git is designed to apply some commit from one branch into another branch
+
+'git stash' command to cut the changes(you need to add the files but not commit) and can paste in new branch by 'git stash pop' which will apply the cut changes and remove from the stack, or 'git stash apply --index' to add the stashed in stage and not committed mode, to remove from stash 'git stash drop'
+git stash clear : to clear the stash and git stash list to list the stash content
+
+if we have merge conflicts pull the code from remote main to local main and merge with feature branch and then push it, now the remote feature will be able to merge with remote main
+
+git log --oneline
+
+cb76ee4 wrong
+01b56c6 test
+
+Using git revert cb76ee4 will by default bring your files back to 01b56c6 and will add a further commit to your history:
+
+8d4406b Revert "wrong"
+cb76ee4 wrong
+01b56c6 test
+
+OR
+
+git reset 01b56c6 will instead bring your files back to 01b56c6 and will clean up any other commit after that from your history :
+
+01b56c6 test
+
+The git reset command removes the commit. The git revert command removes the changes but leaves the commit.
+
+The git revert command is safer, because you can revert a revert.
+
+https://docs.gitlab.com/ee/topics/git/rollback_commits.html : explains reset,revert command
+
+https://www.freecodecamp.org/news/error-failed-to-push-some-refs-to-how-to-fix-in-git/ : error: failed to push some refs to (error in git)
+
+git log --merge : give commits list that causing merge conflicts
+
+git pull --rebase <branchname> : fetch+rebase (If you use the --rebase flag in the git pull command to pull the remote changes, then on top of the remote changes, your local changes will be reapplied.)
+
+git pull --rebase
+git pull : fetch + merge
+
+https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git : url for merge conflicts

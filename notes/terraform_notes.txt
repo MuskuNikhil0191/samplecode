@@ -1,0 +1,159 @@
+
+
+Terraform = IAAC (in aws Cloud Formation)
+terraform supports multiple cloud providers to save their infrastructure
+terraform should have access to aws to change things
+main.tf
+variables.tf( declaring variable types and giving default value)
+providers.tf
+terraform.tfvars ( giving values to the declared variables in variables.tf and overwrite the default value)
+dev.tfvars(if you want you this file value then run "terraform plan -var-file dev.tfvars"
+arguments(inputs) on left of resource "service name" "own name" and attributes(outputs)'
+data call is used to call the resources that are already created
+state file is called backend and we configure it in provider and specify the s3 bucket in which the state file is saved
+
+Terraform
+-----------------------------------------------------------
+Terraform is a tool for building, changing, and versioning infrastructure safely and efficiently
+Categories of Iac(Infrastructure as a code) tools:
+1. Ad hoc scripts(script eg: to create instances)
+2. Configuration management tools(arrangement of provisioned resources : ansible will install all the provisioned resources by terraform)
+3. Server Templating tools(launch templates)
+4. Orchestration tools(containers to orchestrate : kubernetes)
+5. Provisioning tools(providing the cloud to someone end user) 
+• Declarative (end expecting result and it does everthing) vs. Imperative(you have to what to create and in what sequence)
+
+Iac provisioning tools 
+cloud specific : CloudFormation(aws),azure resource manager, google cloud deployment manager
+cloud agnostic : terraform(provides multiple providers ,used if we have resources outside cloud),pulumi
+
+terraform(provisioning) + ansible(configuring)
+terraform('')           + server templates(packaging or bundling the application code)
+terraform('')           + orchestration(we're using terraform to define the cloud resources and use kubernetes to define how our application is deployed and managed on those cloud resources)
+terraform has terraform state to determine the current state(it manages the entire state of the code we wrote) and terraform config to how to configure
+
+Basic Usage Sequence
+• terraform init - initializes project(downloading necessary dependencies)
+• terraform plan - checks with the terraform state file and plan the api calls to add the new ones(dry run that specifies what are added and what are destroyed)
+• terraform apply - apply the new changes
+• terraform destroy - destroy the entire state(i.e., whatever we done in the project)
+
+*count is used to create no of resources(and count.index give the index)
+*foreach(list) is used to create no of resources but we can get every elment(each.key,each.value)
+*depends_on : will be used to genereate dependency based resources
+*life cycle meta arguments :lifecycle{create_before_destro=true} can help with zero downtime deployments, also we have ignore_changes and prevent_destroy 
+*for multi environment we can use workspaces or file structure
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*Devops today is being adopted by many organizations to automate the entire process of software development
+*Pipeline is a series of events that are connected together to make quick software releases.
+• CI/CD Pipeline or Continuous Integration/ Continuous Delivery is referred to as the backbone of DevOps approach
+• The pipeline is responsible for building codes, running tests, and deploying new software versions
+What is Continuous Integration (CI)?
+• Continuous Integration is a practice that integrates code into a shared repository
+• It uses automated verifications for the early detection of problems
+• Continuous Integration doesn't eliminate bugs, but helps in finding and removing them easily
+What is Continuous Delivery (CD)?
+• Continuous Delivery is the phase in which the changes are made in the code before deploying
+• The team in this phase decides what is to be deployed to the customers and when
+• The ultimate goal of the pipeline is to make deployments
+
+• When both these practices are placed in order, all the steps could be referred to as automated, and this process is CI/CD
+• Implementation of CI/CD enables the team to deploy codes quickly and efficiently
+• The process makes the team more agile, productive, and confident
+
+• Jenkins is an open source automation tool used to build and test software proiects
+• The tool makes it easier for developers to integrate changes to the project
+• Jenkins achieves continuous integration with the help of plugins.
+
+
+*ci/cd is automation tool to run the repetitive tasks
+CI/CD Tools : 
+**Jenkins(open source &free)(jenkins run through DSL plugin which uses groovy language)(has slaves)
+**Azure Devops(its not free)(yaml language)(has agents)
+*Github actions(by microsoft, latest everyone is migrating to this one)(yaml language)(has runners)
+*gitlab(yaml language)
+*codepipeline(yaml language)(Aws pipeline, not used mostly)
+*udeploy
+*circleci
+
+artifact is the end product
+build means continuous integration
+the artifact is deployed on server is continuous development
+if there is no human intervention(like giving permissions by manager or a person to deploy) b/w ci&cd then it is continuous deployment otherwise continuous delivery
+
+jenkins mainly uses 3 jobs : 
+*freestyle(simple steps commands will be written that will be executed)
+*pipeline(pipeline has different stages, each stage is one step)
+*multibranch pipeline
+
+
+jenkins master jenkins(server which gives the UI),it has slave servers to run multiple jobs, slaves that have labels(in real time shared storage is used)
+*plugins can be installed which gives directly options in freestyle or any other selector, they can be used to build the code 
+*tools are used to execute the commands required
+
+syntax for pipeline:
+
+pipeline{
+	stages{
+		stage("name"){
+			steps{
+			}
+		}
+	}
+}
+
+
+withCredentials([aws(credentialsId: "aws-credentials")]) {
+                    sh 'terraform plan'
+                }
+
+instead we can use shared libraries or assume role concept
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

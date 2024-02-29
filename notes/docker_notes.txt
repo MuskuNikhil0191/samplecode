@@ -1,0 +1,102 @@
+Docker notes
+---------------------
+
+monolithic vs micro services
+(single unit consist of entire code) vs (divide the code into sub unites)
+
+build gives artifact -> docker image -> push the image to ECS -> pull the image & deploy in fargate
+------------------------------------------------------
+• Makes developing and deploying applications much easier
+• Packages application with all the necessary dependencies, configuration, system tools and runtime
+deployment process with docker:
+Install Docker runtime on the server
+Run Docker command to fetch and run the Docker artifacts
+*os is made of 2 layers application and kernel ,application layer consists of applications they interact with kernel to allocate the resources.
+*VM has its own application layer and kernel whereas docker work with application layer and used the existing host kernel
+*docker runs fast, uses less memory than vm but vm is compatible is with all os whereas docker is not compatible with linux
+*but linux based docker images are not supported in windows as the kernel of windows doesn't know linux, so docker desktop is used ,which Uses a Hypervisor layer with a lightweight Linux distro.
+
+Docker Image is an executable application artifact that Includes app source code, but also complete environment configuration
+•Immutable template that defines how a container will be realized
+Docker container is the running instance of an image 
+•we can run multiple container from one image
+• Docker Registries : storage and distribution system for Docker images
+• Docker hosts one of the biggest Docker Registry, called "Docker Hub"
+• Docker image tags defines the versions
+• docker pull <imagename>:<tag(version)>  - download the specific image from docker hub 
+• docker run <imagename>:<tag(version)>  - run the image as a container(-d or --detach  Runs container in background and prints the container ID)(we can run without pulling the image , as if it is not found locally, then it searches the docker hub)
+• docker ps : running containers list with the container id and the details
+• docker ps -a : display all the containers including the not running ones
+• docker logs <containername/id> : print the application logs of the container running in background
+• docker stop <containername/id> : stops the container
+• docker start <containername/id> : starts the container
+• docker images : gives the images present
+
+• Application inside container runs in an isolated Docker network
+• This allows us to run the same app running on the same port multiple times
+• We need to expose the container port to the host (the machine the container runs on)
+• docker run <image>:<tag> -d -p {HOST_PORT}:{CONTAINER_PORT} : to run the continer on the port we specify (eg : 9000(local port):80(port of the remote container))
+• docker run --name <oldcontainer> -d -p 9000:80 <image>:<tag> - to use the old container to run the image instead of creating a new container
+
+• All big cloud provider offer private registries: Amazon ECR, microsoft ACR, Google Container Registry, docker.io, quay.io(third party) etc
+• Docker Hub is a registry,On Docker Hub you can host private or public repositories for your applications
+• Docker Registry is a service providing storage which is a Collection of repositories
+• Docker Repository is a Collection of related images with same name but different versions
+
+Dockerfile is a text document that contains commands to assemble an image
+Docker can then build an image by reading those instructions
+
+FROM
+• Build this image from the specified image
+RUN
+• Will execute any command in a shell inside the container environment
+COPY
+• Copies files or directories from <src> and adds them to the filesvstem of the container at the path <dest>
+• While "RUN" is executed in the container, "COPY" is exectued on the host
+WORKDIR
+• Sets the working directory for all following commands
+• Like changing into a directory: "cd command"
+CMD
+• The instruction that is to be executed when a Docker container starts
+• There can only be one "CMD" instruction in a Dockerfile
+ARG : command used to specify arguments during runtime
+
+* docker build -t <imagename>:<tag> <dockerfilepath> : for building an image from dokerfile
+* docker run --name <name> -d -p 4000:4000 <imagename> : run the image in the container
+*docker tag <imagename> <username>/<yourimagename>:<version> : to tag the image in order to push to the dockerhub
+*docker push <imagename>:<tag> : to push to docker hub
+**docker exec -it <containerid> /bin/sh : used to get into the docker container
+*docker push url/<image>:<tag> : for pushing the image to the specified repo url
+*docker inspect <containerid> : to inspect the docker container
+Remember: A Docker image consists of layers and Each instruction in the Dockerfile creates one layer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

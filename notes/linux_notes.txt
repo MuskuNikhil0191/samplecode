@@ -1,0 +1,155 @@
+
+whoami or id -un: gives the current user
+history : to get the history of commands that we entered
+pwd : gives the entire path of  present working directory(initially it is home directory when the user logged in)
+cd or cd ~ : to home directory
+cd / : to root directory
+cd path : to the specified directory path
+cd .. : to parent directory i.e,. One directory back
+cd - : to the previous path
+ls : list all the files and directories in the present working directory
+ls -a : list all the files including hidden ones 
+ls -l : long list all the attributes including permission of all files
+ls -t : list the files last modified first
+ls -lt : similar to the ls -t but gives the date and time info
+ls -r : lists the files in reverse order
+ls -S : lists files with biggest files first
+ls -Sr : lists files with smallest files first i.e., reverse to the above command
+mkdir name : creates directory
+find start location -name filename : to search the filename starting from the specified path
+mkdir -p parentname/subname : creates parent directory as well as child
+vi hello.txt or vim hello.txt: creates a text file and enters the command mode
+	i : enters the insert mode now you can insert text
+	o : create new line insert mode,A insert mode at end,I insert mode at beginning, a one letter 		after cursor (all in command mode)
+	esc : to go out of command mode
+	:w : to save text into file
+	:q : to quit
+	:q! : to quit without saving(override the error)
+	:wq : to write then quit the file ( shift+zz shortcut)
+	:set number : to set numbers to lines
+	dd : to delete line
+	nodd : no of lines to delete from the cursor
+	u : to undo 
+	ctrl+r : to redo
+	/text : to search for text in command mode
+	:%s/text/replacetxt/gc - replace text with replacetext, g for greedily replaces all , c asks 
+   					for confirmation 
+touch file1 file2 : we can create multiple files
+stat file1 : gives the timestamps access time, modification time, change time
+touch -m file1 : changes modification time to current time
+touch -a file1 : changes access time to current time
+touch -d "yyy-mm-dd hh:mm:ss" file1 : to change modification time to arbitrary time
+
+cat>filename : creates the file and we can insert text
+cat filename : display contents of file(we can also display multiple files the content will be one after another ( cat -n filename gives the file content with nos)
+cat>>filename : to insert more content to the file
+cat sourcefile>destination file : copy source file content to destination file
+(ctrl+d to save and quit)
+
+rm file1 : file1 will be deleted(multiple files can be deleted)
+rm -i filename: asks for confirmation before deleting
+rm -r directory : deletes recursively directory and all sub dirctories
+rm -f filename : deletes forcibly if any permission is required
+
+cp file1 file2 : copy file1 to file2 if file2 not exists it will be created
+cp file dir : copies file to directory
+cp -r dir1 dir2 : copies dir1 entirely to dir2
+mv file1 file2 : renames file1 to file2
+mv src dir : moves src file to dir
+-i aks for confirmatioin, -f forcibly moves , -b creates a backup file
+
+head -n filename: prints the fist n lines from the file 
+tail -n filename : prints the last n lines from the file
+
+grep "string" filename /paath: string to be searched in file  (grep -i to ignore case)
+cat filename | grep "string" : pipe is used to connect, search string in file and prints
+
+awk is a scripting command which is used to filter the data from the file uses space as a delimiter
+awk '{print}' - to print the file content
+awk '{print $n}' - prints the  nth field from all the lines (0 means prints all the content)
+we can pipe the awk command with any command eg: cat hello.txt | awk '{print $1}'
+$NF stands for number of fields i.e., the last field will be printed with print statement
+awk -F':' '{print $1}' - F is used to specify field to be used as delimiter, now the 1st fields separated by : are printed
+*hello.txt.bk is the backup file
+
+sed command is used to replace text in file , allows regular expressions
+sed -i -r 's/^bill@.*example\.org/\1@example.com hello.txt (-i for in place modification, -r for use of regular expressions \1 replaces the first occurrence)
+cat file1 | sed -r 's/hi/hello/' > file2 (replaces hi in file1 with hello and save in in new file2
+
+users
+root user who is admin
+system user - created by applications eg: /var
+normal user -created by admin
+sudo -i : to goto root user or admin
+sudo -i passwd 1234 username : to assign password to username
+cat /etc/passwd : gives all the users
+useradd user-name : creates the user with user-name and it is present in /home dir , anytime we create user a group also created present in /etc/group dir
+users inherit the permission from the group
+sudo su username - to switch user
+id user - to get the user and groups details
+passwd : to change password
+the user 
+sudo groupadd demo - to create group with unique Id 
+sudo groupadd -g 1009 demo1 -to change the groupie
+sudo groupmod -n test demo1 - to change group name test to demo1
+sudo usermod -aG groupname user : add group to user (usermod is used to change attributes of the user)
+ -g owercase g, you assign a primary group. When you use an uppercase -G , as above, you assign a new secondary group.
+sudo gpasswd --delete user1 demo - to delete user1 from group demo
+sudo groupdel demo - to delete group demo
+
+sudo dscl . create /users/paul3 UserShell /bin/bash UniqueID 1111 PrimaryGroupID 111 NFSHomeDirectory /users/ paul3 : to create a new user in mac through terminal
+sudo dscl . passwd /users/paul3 <Xxxxxx> : to create pwd for the user
+sudo dscl . -list /Users UniqueID - to list all the uniqueids of all users
+sudo dscl. append /groups/admin GroupMembership paul3 - To give user the administrative privileges, you can use below command.
+sudo dscl . -create /groups/dev2 gid 2222 : to create new groups
+sudo dscl . -delete users/paul3 : to delete users
+sudo dscl . -delete /groups/dev2 : to delete group
+sudo dseditgroup -o edit -a john -t user admin
+sudo dseditgroup -o edit -a john -t user wheel : It's also possible to do this with dscl, but to do it properly you need to both add the user's short name to the group's GroupMembership list, and add the user's GeneratedUID to the group's GroupMembers list.  dseditgroup takes care of both in a single operation.
+
+vi /etc/sudoers is only accessed by root,
+in sudoers file you can give admin privileges access to normal users and can use sudo at beginning to act as a admin
+
+groups - to display groups names
+cat /etc/group to display all groups ( use | (pipe) less to display some groups and then one by one)
+groups username - to display user belongs to which groups
+sudo chown username:groupname filename - changes ownership of file to the mentioned username & group
+ - R to change recursively all the files and folder ownership
+1 = Execute, 2 = Write , 4 = Read
+--- : user, group,everyoneelse , 777 means rwxrwxrwx permissions for the file
+sudo chmod 777 filename : gives all permissions to user, group and everyone ( -R to give permission to entire folder)
+sudo chmod u+x file : gives user execute permission on file ug+x gives both to user, group
+file owner and root can change the permissions of the file (by using chmod)
+only root user can change the ownership of the file ( by using chown)
+any user can change the group to another group he belongs to(by using 'chgrp')
+
+fdisk -l : display partitions
+fdisk name : disk to partition name , each portion consists of sectors, next enter n to new partition, choose first sector to last sector size and continue and at last enter p to display portion table, w to save changes or q to quit without changes
+we can divide portions into 4 primary partitions or 3 primary and 1 extended portion, further extended partition can be divided into logical partitions
+
+Create a File System on the Partition
+The commonly used Linux file systems are ext2, ext3, ext4, JFS, ReiserFS, XFS, FAT (usually in Windows OS) and B-treeFS.
+mkfs.ext4 -j /dev/sdb1 : mkfs(make file system) it will make the first partition’s file system to be ext4 (format the partition to ext4). -j flag is used to allow/support journaling. It helps in throwing errors into the journal, in case of system failure.
+we formatted the disks, it is of no use to us, unless we mount it on a directory.
+mkdir /mount1
+mount /dev/sdb1 /mount1 - mount the partition to a dir
+unmount /dev/sb1 - unmount the dir
+du name: to measure the disk usage by files and directories
+df -h : to view the disk details in human readable format
+vi /etc/fstab : edit the file system table and save the file
+mount -a : after editing the file , use this command to mount partitions permanently 
+lsblk : to display the details about block devices
+
+connect one ec2 to another
+ssh-keygen in server 1,copy .ssh/id_rsa.pub  and paste in .ssh/authorized_keys folder of server 2.
+
+threshold means limit
+top,htop,ps to get the device config of linux.i.e., check the running processes in linux, ps command gives the static snapshot of all processes, while top & htop sort by cpu usage.
+
+Networking commands 
+
+ifconfig / ipconfig : it gives network config of server (it gives the ip associated to our system)
+netstat: it gives network statistics(gives connections system is making, all tcp connections)
+traceroute ip : it shows how the traffic is flowing from on network to other(how the traffic(packets) is received from one hop(host) to another from the source to destination (so we can count no of hops)
+ping url : check whether it is working or not and give 0% loss at end it is properly works
+nslookup domainname: gives the ip address that is associated with dns
