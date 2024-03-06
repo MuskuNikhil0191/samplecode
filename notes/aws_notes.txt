@@ -780,9 +780,11 @@ API Gateway - Endpoint Types
  Edge-Optimized (default): For global clients
 • Requests are routed through the CloudFront Edge locations (improves latency)
 • The API Gateway still lives in only one region
+• TLS certificate must reside in the same region in which the cloudfront that accessing the api gateway is present for HTTPS protocol.
 Regional:
 • For clients within the same region
 • Could manually combine with CloudFront (more control over the caching strategies and the distribution)
+• TLS certificate must reside in the same region of api gateway for https protocol
  Private:
 • Can only be accessed from your VPC using an interface VPC endpoint (ENI)
 • Use a resource policy to define access
@@ -909,7 +911,7 @@ Amazon EventBridge - Security
 *permission boundary can be used to set the permission boundary to the users even the role gives all accesses, if we restrict in permission boundary then the user has no access
 *if we allow and deny in iam policy then deny will happens and if we do not specify allow or deny then also deny happens
 
-AWS AM Identity Center (successor to AWS Single Sign-On)
+AWS IAM Identity Center (successor to AWS Single Sign-On)
 • One login (single sign-on) for all your AWS accounts in AWS Organizations
 
 AWS IAM Identity Center Fine-grained Permissions and Assignments:
@@ -966,18 +968,109 @@ AWS Control Tower - Guardrails
 
 ----------------------------------------------------------------------------------------------------------------------------
 
+Encryption in flight (TLS / SSL)
+• Data is encrypted before sending and decrypted after receiving
+• TLS certificates help with encryption (HTTPS)
+• Encryption in flight ensures no MITM (man in the middle attack) can happen
+And we know server-side encryption (encryption decryption happens at server level) and client-side encryption(reverse of server-side)
 
+AWS KMS (Key Management Service)
+• Anytime you hear "encryption" for an AWS service, it's most likely KMS
+• AWS manages encryption keys for us
+• Fully integrated with IAM for authorization
+• Easy way to control access to your data
+• Able to audit KMS Key usage using CloudTrail
+Never ever store your secrets in plaintext, especially in your code!
+• KMS Key Encryption also available through API calls (SDK, CLI)
 
+KMS Keys Types
+• KMS Keys is the new name of KMS Customer Master Key
+Symmetric (AES-256 keys)
+• Single encryption key that is used to Encrypt and Decrypt
+• AWS services that are integrated with KMS use Symmetric CMKs
+• You never get access to the KMS Key unencrypted (must call KMS API to use)
+Asymmetric (RSA & ECC(elliptic curve) key pairs)
+• Public (Encrypt) and Private Key (Decrypt) pair
+• Used for Encrypt/Decrypt, or Sign Verify operations
+• The public key is downloadable, but you can't access the Private Key unencrypted
 
+Types of KMS Keys:
+• AWS Owned Keys (free): SSE-S3, SSE-SQS, SSE-DDB (default key)
+• AWS Managed Key: free (aws/service-name, example: aws/rds or aws/ebs)
+• Customer managed keys created in KMS: $ I / month
 
+KMS Key Policies
+• Control access to KMS keys, "similar" to S3 bucket policies
+• Difference: you cannot control access without them
+*Default KMS key policy(allow access to root user=entire aws account) and custom KMS key policy(difine users, roles to give permissions)
 
+KMS Multi-Region Keys
+• Identical KMS keys in different AWS Regions that can be used interchangeably
+• Multi-Region keys have the same key ID, key material, automatic rotation(renewing every year)...
+• KMS Multi-Region are NOT global (Primary + Replicas)
+• Each Multi-Region key is managed independently
 
+** You can use multi-region AWS KMS Keys, but they are currently treated as independent keys by Amazon S3 (the object will still be decrypted and then encrypted)
 
+*SSM parameter store(systems manager parameter store) stores secrets and configuration management data used for centralized access, it uses tree structure like
+/dev/id,/dev/passwd and we can get in cli by 'aws ssm get-parameters --names /dev/id (byname) or get-parameters-by-path --path /dev (bypath)
 
+AWS Secrets Manager
+• Newer service, meant for storing secrets
+• Capability to force rotation of secrets every X days
+• Automate generation of secrets on rotation (uses Lambda)
+• Integration with Amazon RDS (MySQL, PostgreSQL, Aurora)(mostly meant for RDS integration)
+• Replicate Secrets across multiple AWS Regions
 
+AWS Certificate Manager (ACM)
+• Easily provision, manage, and deploy TLS Certificates
+• Provide in-flight encryption for websites (HTTPS)
+• Supports both public and private TLS certificates(public -free)
+• Cannot use ACM with EC2 (can't be extracted)
 
+AWS WAF - Web Application Firewall
+• Protects your web applications from common web exploits (Layer 7) and can define web access control rules
+• Layer 7 is HTTP (vs Layer 4 is TCP/UDP)
+Deploy on
+• Application Load Balancer
+• API Gateway
+• CloudFront
+• AppSync GraphQL API
+• Cognito User Pool
 
+WAF - Fixed IP while using WAF with a Load Balancer
+• WAF does not support the Network Load Balancer (Layer 4)
+• We can use Global Accelerator(similar to cloudfront for edge locations data access globally) for fixed IP and WAF on the ALB
 
+AWS Shield: protect from DDoS attack
+• DDoS: Distributed Denial of Service - many requests at the same time
+AWS Shield Standard: Free service that is activated for every AWS customer
+AWS Shield Advanced: Optional DDoS mitigation service ($3,000 per month per organization)(add it over WAF for good security)
+
+AWS Firewall Manager
+• Manage rules in all accounts of an AWS Organization
+Security policy: common set of security rules
+• WAF rules (Application Load Balancer, API Gateways, CloudFront)
+• AWS Shield Advanced (ALB, CLB, NLB, Elastic I, CloudFront)
+• Security Groups for EC2, Application Load BAlancer and ENI resources in VPC
+• AWS Network Firewall (VPC Level)
+• Amazon Route 53 Resolver DNS Firewall
+• Policies are created at the region level
+• Rules are applied to new resources as they are created (good for compliance) across all and future accounts in your Organization
+
+Amazon GuardDuty
+• Intelligent Threat discovery to protect your AWS Account (input data can be cloudtrail events,vpc flow logs, dns logs etc.. and can create events in eventbridge and can send notifications)
+• Uses Machine Learning algorithms, anomaly detection, 3rd party data
+• Can protect against CryptoCurrency attacks (has a dedicated "finding" for it)
+
+Amazon Inspector:
+• Automated Security Assessments for only Remember: only for EC2 instances, Container Images & Lambda functions
+• Reporting & integration with AWS Security Hub
+• Send findings to Amazon Event Bridge
+
+Amazon Macie
+• Amazon Macie is a fully managed data security and data privacy service that uses machine learning and pattern matching to discover and protect your sensitive data in AWS.
+• Macie helps identify and alert you to sensitive data, such as personally identifiable information (PI)
 
 
 

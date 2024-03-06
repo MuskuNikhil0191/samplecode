@@ -50,7 +50,7 @@ FROM
 • Build this image from the specified image
 RUN
 • Will execute any command in a shell inside the container environment
-COPY
+COPY (ADD also works)
 • Copies files or directories from <src> and adds them to the filesvstem of the container at the path <dest>
 • While "RUN" is executed in the container, "COPY" is exectued on the host
 WORKDIR
