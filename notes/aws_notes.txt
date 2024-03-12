@@ -467,7 +467,7 @@ AWS Transfer Family
 • A fully-managed service for file transfers into and out of Amazon s3 or Amazon EFS using the FTP protocol
 • FTP (File Transfer Protocol (FTP)),FTPS (File Transfer Protocol over SSL (FTPS)),SFTP (Secure File Transfer Protocol (SFTP))
 
-AWS DataSync ,Move large amount of data on scheduled time to and from for onpremises or among aws services, File permissions and metadata are preserved (NFS POSIX, SMB...),can efficiently migrate the data from on premises to s3 , can migrate large data from s3 to nfs
+AWS DataSync ,Move large amount of data on scheduled time to and from for onpremises or among aws services, File permissions and metadata are preserved (NFS POSIX, SMB...),can efficiently migrate the data from on premises to s3 , can migrate large data from s3 to nfs. It doesn't support EBS.
 
 ec2-blocks, efs - file system,s3 -objects 
 
@@ -1045,7 +1045,7 @@ WAF - Fixed IP while using WAF with a Load Balancer
 AWS Shield: protect from DDoS attack
 • DDoS: Distributed Denial of Service - many requests at the same time
 AWS Shield Standard: Free service that is activated for every AWS customer
-AWS Shield Advanced: Optional DDoS mitigation service ($3,000 per month per organization)(add it over WAF for good security)
+AWS Shield Advanced: Optional DDoS mitigation service ($3,000 per month per organization)(add it over WAF for good security),24/7 support
 
 AWS Firewall Manager
 • Manage rules in all accounts of an AWS Organization
@@ -1071,6 +1071,94 @@ Amazon Inspector:
 Amazon Macie
 • Amazon Macie is a fully managed data security and data privacy service that uses machine learning and pattern matching to discover and protect your sensitive data in AWS.
 • Macie helps identify and alert you to sensitive data, such as personally identifiable information (PI)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Disaster Recovery
+
+RPO : Recovery Point Objective ( time between RPO & disaster is the Data loss)
+RTO : Recovery Time Objective (time between disaster & RTO is the Downtime of app)
+
+Disaster Recovery Strategies
+
+Backup and Restore
+• High RPO
+• Uses AWS storage gateway/ snowball for storing backup from on premise to cloud and s3 archiving data, snapshots of services, ami templates for ec2 instances
+
+Pilot Light
+• A small version of the app is always running in the cloud(for critical infrastructure)
+• Useful for the critical core (pilot light)
+• Very similar to Backup and Restore
+• Faster than Backup and Restore as critical systems are already up
+*DNS will have another route in case of failure to backup cloud ( EC2 instances , RDS running)
+
+Warm Standby
+• Full system is up and running, but at minimum size
+• Upon disaster, we can scale to production load
+*DNS will have another route in case of failure to backup cloud ( asg, loadbalacer, RDS slave running)
+
+Multi Site / Hot Site Approach
+• Very low RTO (minutes or seconds) - very expensive
+• Full Production Scale is running AWS and On Premise
+*DNS will have two active-active routing one for either on-premise/cloud and another for backup cloud (asg,loadbalancer, Aurora slave running)
+
+Disaster Recovery Tips
+Backup :
+• EBS Snapshots, RDS automated backups / Snapshots, etc...
+• Regular pushes to S3 / S3 lA / Glacier; Lifecycle Policy, Cross Region Replication
+• From On-Premise: Snowball or Storage Gateway
+High Availability :
+• Use Route53 to migrate DNS over from Region to Region
+• RDS Multi-AZ, ElastiCache Multi-AZ, EFS, S3
+• Site to Site VPN as a recovery from Direct Connect
+Replication :
+• RDS Replication (Cross Region), AWS Aurora + Global Databases
+• Database replication from on-premise to RDS
+• Storage Gateway
+ Automation : 
+• CloudFormation / Elastic Beanstalk to re-create a whole new environment
+• Recover / Reboot EC2 instances with CloudWatch if alarms fail
+• AWS Lambda functions for customized automations
+Chaos : 
+• Netflix has a "simian-army" randomly terminating EC2
+
+DMS - Database Migration Service
+• Quickly and securely migrate databases to AWS, resilient, self healing
+• The source database remains available during the migration
+• Requires a server i.e., EC2 instance for DMS
+AWS Schema Conversion Tool (SCT)
+• Convert your Database's Schema from one engine to another( DMS+SCT to migrate from one DB engine to another )
+• You do not need to use SCT if you are migrating the same DB engine
+
+On-Premise strategy with AWS:
+• VM Import / Export : Migrate existing applications into EC2,Create a DR repository strategy for your on-premise VMs,Can export back the VMs from EC2 to on-premise
+• AWS Application Discovery Service: Gather information about your on-premise servers to plan a migration,Track with AWS Migration Hub
+• AWS Database Migration Service (DMS) :replicate On-premise => AWS, AWS => AWS, AWS => On-premise, Works with various database technologies (Oracle, MySQL, DynamoDB, etc..)
+• AWS Server Migration Service (SMS): Incremental replication of on-premise live servers to AWS
+
+AWS Backup
+• Fully managed service, Centrally manage and automate backups across AWS services(ec2/ebs,s3,rds/aurora/dynamodb,efs etc,.) into aws backup managed s3
+AWS Backup Vault Lock
+• Enforce a WORM (Write Once Read Many) state for all the backups that you store in your AWS Backup Vault
+• Additional layer of defense to protect your backups against: Inadvertent or malicious delete operations, by root user
+
+AWS Application Discovery Service
+• Plan migration projects by gathering information about on-premises data centers
+• Server utilization data and dependency mapping are important for migrations
+ Agentless Discovery (AWS Agentless Discovery Connector)
+• VM inventory, configuration, and performance history such as CPU, memory, and disk usage
+ Agent-based Discovery (AWS Application Discovery Agent)
+• System configuration, system performance, running processes, and details of the network connections between systems
+• Resulting data can be viewed within AWS Migration Hub
+
+AWS Application Migration Service (MGN)
+• The "AWS evolution" of CloudEndure Migration, replacing AWS Server Migration Service (SMS)
+• Lift-and-shift (rehost) solution which simplify migrating applications to AWS
+• Converts your physical, virtual, and cloud-based servers to run natively on AWS
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 
