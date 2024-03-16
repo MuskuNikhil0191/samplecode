@@ -1,4 +1,4 @@
- 
+  
 AWS NOTES
 ----------
 
@@ -498,11 +498,13 @@ SQS(simple queue service) used to decouple applications, contains producer sends
 *long polling allows consumers to wait for messages, it reduces api calls, increase the efficiency and latency of your application.
 *FIFO queue = First In First Out (ordering of messages in the queue),exactly one send capability,limited to 300 msgs without batching & 3000 msgs with batching.
 *can have groupeid similar to partition key in kinesis and each group of messages can have a different consumers
+*DLQ(dead letter queue) can be setup for messages that are not processed after n tries of 1 try will be pushed to dlq to avoid polling infinite times
 
 SNS(simple notification service) (publish subscribe model), producer send messages to sns topic, consumers(subscribers) who subscribes to sns will get all the messages, access policies
 (sns can have many subscribers like email, http endpoints,sqs,lambda etc,. not kinesis data streams)
 *sns fifo can have only sqs subscribers, to allow ordering use sqs fifo with high throughput
 SNS - Message Filtering : JSON policy used to filter messages sent to SNS topic's subscriptions,If a subscription doesn't have a filter policy, it receives every message
+*if lambda can't process sns messages then dlq can be set up at lambda level to push the messages after 3 retries
 
 Kinesis makes it easy to collect, process, and analyze streaming data in real-time
 
@@ -806,7 +808,7 @@ Cognito Identity Pools (Federated Identity):
 • Integrate with Cognito User Pools as an identity provider
 •Cognito vs IAM: "hundreds of users", "mobile users", "authenticate with SAML"
 
-*Amazon SES(simple Email Service) is used to send emails(serverless).
+*Amazon SES(simple Email Service) is used to send emails(serverless), can send public mails.
 
 ----------------------------------------------------------------------------------------------------------------------------
 
@@ -1157,20 +1159,212 @@ AWS Application Migration Service (MGN)
 • Converts your physical, virtual, and cloud-based servers to run natively on AWS
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
+*We can use cloudfront georestriction to restrict the particular country to access it and to restrict a particular ip then we need to use WAF ip restriction.
 
+Compute and Networking
+EC2 Instances:
+• CPU optimized, GPU optimized
+• Spot Instances / Spot Fleets for cost savings + Auto Scaling
+EC2 Placement Groups: Cluster for good network performance
 
+Compute and Networking
+EC2 Enhanced Networking (SR-IOV)
+• Higher bandwidth, higher PPS (packet per second), lower latency
+• Option I: Elastic Network Adapter (ENA) up to 100 Gbps
+• Option 2: Intel 82599 VF up to 10 Gbps - LEGACY
+ Elastic Fabric Adapter (EFA)
+• Improved ENA for HPC(High Performance Computing), only works for Linux
+• Great for inter-node communications, tightly coupled workloads
+• Leverages Message Passing Interface (MPI) standard
+• Bypasses the underlying Linux OS to provide low-latency, reliable transport
 
+*EBS(suitable for persistent storage requirements) and Instace store(high hpc,physically attached, can only attach to 1 instance, mostly used for caching high performance temporary data storage) are EC2 instances storages
 
+Automation and Orchestration
+AWS Batch
+• AWS Batch supports multi-node parallel jobs, which enables you to run single jobs that span multiple EC2 instances.
+AWS ParallelCluster
+• Open-source cluster management tool to deploy HPC on AWS
+• Configure with text files
+• Automate creation ofVPC, Subnet, cluster type and instance types
+• Ability to enable EFA on the cluster (improves network performance)
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+CloudFormation
+• CloudFormation is a declarative way of outlining your AWS Infrastructure, for any resources (most of them are supported).
+Benefits of AWS CloudFormation
+• Infrastructure as code
+• cost
+• productivity
 
+CloudFormation - Service Role
+• IAM role that allows CloudFormation to create/update/delete stack resources on your behalf
+• Give ability to users to create/update/delete the stack resources even if they don't have permissions to work with the resources in the stack.
+• User must have iam:PassRole permissions.
 
+Amazon SES to send mails(mailing service)
 
+Amazon Pinpoint
+• Scalable 2-way (outbound/inbound) marketing communications service
+• Supports email, SMS, push, voice, and in-app messaging Ability to segment and personalize messages with the right content to customers
+• Possibility to receive replies
 
+Pinpoint Versus Amazon SNS or Amazon SES
+• In SNS & SES you managed each message's audience, content, and delivery schedule
+• In Amazon Pinpoint, you create message templates, delivery schedules, highly-targeted segments, and full campaigns
 
+Systems Manager - SSM Session Manager
+• Allows you to start a secure shell on your EC2 and on-premises servers(ec2 instance must have iam role to access ssm session manager)
+• No SSH access, bastion hosts, or SSH keys needed and No port 22 needed (better security), supports linux,macos or windows
+• Systems Manager - Run Command Execute a document (= script) or just run a command(can be across multiple instances)
+• Systems Manager - Patch Manager Automates the process of patching managed instances
+• Systems Manager - Maintenance Windows defines a schedule for when to perform actions on your instances(contains schedule, duration, set of registered instances,tasks etc.)
+• Systems Manager - Automation simplifies common maintenance and deployment tasks of EC2 instances and other AWS resources(Automation Runbook - SSM Documents to define actions preformed on your EC2 instances or AWS resources)
 
+Cost Explorer
+• Visualize, understand, and manage your AWS costs and usage over time, forecast future usage by comparing previous, savings plan
 
+AWS Batch
+• Fully managed batch processing at any scale and Efficiently run 100,000s of computing batch jobs on AWS
+• A "batch" job is a job with a start and an end (opposed to continuous)
 
+Batch vs Lambda
+Lambda:
+• Time limit, Limited runtimes, Limited temporary disk space, Serverless
+Batch:
+• No time limit, Any runtime as long as it's packaged as a Docker image, Rely on EBS / instance store for disk space, Relies on EC2 (can be managed by AWS)
+
+Amazon AppFlow
+• Fully managed integration service that enables you to securely transfer data between Software-as-a-Service (SaaS) applications and AWS
+• Sources: Salesforce, SAP, Zendesk, Slack, and ServiceNow
+
+AWS Amplify - web and mobile applications
+• A set of tools and services that helps you develop and deploy scalable full stack web and mobile applications
+
+AWS Well-Architected Tool
+• Free tool to review your architectures against the 6 pillars Well-Architected Framework and adopt architectural best practices
+• I) Operational Excellence
+• 2) Security
+• 3) Reliability
+• 4) Performance Efficiency
+• 5) Cost Optimization
+• 6) Sustainability
+
+Trusted Advisor
+• No need to install anything - high level AWS account assessment
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Amazon Athena
+• Serverless query service to analyze data stored in Amazon S3
+• Uses standard SQL language to query the files (built on Presto)
+• Commonly used with Amazon Quicksight for reporting/dashboards
+
+Amazon Athena - Performance Improvement
+>Use columnar data for cost-savings (less scan)
+• Apache Parquet or ORC is recommended
+• Huge performance improvement
+• Use Glue to convert your data to Parquet or ORC
+>Compress data for smaller retrievals (bzip2, gzip, Iz4, snappy, zlip, zstd...)
+>Partition datasets in S3 for easy querying on virtual columns
+> Use larger files (> 128 MB) to minimize overhead
+
+Amazon Athena - Federated Query
+• Allows you to run SQL queries across data stored in relational, non-relational, object, and custom data sources (AWS or on-premises)
+• Uses Data Source Connectors that run on AWS Lambda to run Federated Queries (e.g, CloudWatch Logs, DynamoDB, RDS, ...)
+
+Redshift Overview
+• Redshift is based on PostgreSQL, but it's not used for OLTP(transaction)
+• It's OLAP - online analytical processing (analytics and data warehousing for petabytes of data)
+•need to load data from s3, faster than athena due to indexes, columnar storage, can be integrated with tableau/quicksight,support sql
+Redshift Cluster
+• Leader node: for query planning, results aggregation
+• Compute node: for performing the queries, send results to leader (query->leader->compute(cluster consists of leader and compute nodes can be n)
+• You provision the node size in advance, use reserved instances for cost saving
+• to copy redshift cluster across diff az take snapshot, copy it to antther az and create redshift out of it
+
+Redshift Spectrum
+• Query data that is already in S3 without loading it into redshift
+• Must have a Redshift cluster available to start the query, query is submitted to 1000s of redshift spectrum nodes
+
+Amazon OpenSearch Service
+• Amazon OpenSearch is successor to Amazon ElasticSearch
+• In DynamoDB, queries only exist by primary key or indexes..
+• With OpenSearch, you can search any field, even partially matches
+• Two modes: managed cluster or serverless cluster
+• Does not natively support SQL (can be enabled via a plugin),can ingest data from data firehose,cloudwatch logs etc.,
+
+Amazon EMR
+• EMR stands for "Elastic MapReduce"
+• EMR helps creating Hadoop clusters (Big Data) to analyze and process vast amount of data
+• The clusters can be made of hundreds of EC2 instances
+• EMR comes bundled with Apache Spark, HBase, Presto, Flink..
+• EMR takes care of all the provisioning and configuration and Auto-scaling and integrated with Spot instances
+• Use cases: data processing, machine learning, web indexing, big data...
+• Master Node: Manage the cluster, coordinate, manage health - long running
+• Core Node: Run tasks and store data - long running
+• Task Node (optional): Just to run tasks - usually Spot instances
+
+Amazon QuickSight
+• Serverless machine learning-powered business intelligence service to create interactive dashboards
+• In-memory computation using SPICE engine if data is imported into QuickSight
+• Enterprise edition: Possibility to setup Column-Level security (CLS)
+
+AWS Glue
+• Managed extract, transform, and load (ETL) service
+• Useful to prepare and transform data for analytics,Fully serverless service
+
+*Glue data crawler goes through all the databases and send the metadata to glue catalog, it uses this metadata to leverage database schemas and this catalog is used by glue to perform ETL jobs. glue catalog can also be used by athena,emr,redshift spectrum for leveraging schemas by using data discovery.
+
+Glue - things to know at a high-level
+• Glue Job Bookmarks: prevent re-processing old data
+• Glue Elastic Views:
+	>Combine and replicate data across multiple data stores using SQL
+	>No custom code, Glue monitors for changes in the source data, serverless
+	>Leverages a "virtual table" (materialized view)
+• Glue DataBrew: clean and normalize data using pre-built transformation
+• Glue Studio: new GUI to create, run and monitor ETL jobs in Glue
+• Glue Streaming ETL (built on Apache Spark Structured Streaming): compatible with Kinesis Data Streaming, Kafka, MSK (managed Kafka)
+
+AWS Lake Formation (provides centralized permissions, fine-grained access control)
+• Data lake = central place to have all your data for analytics purposes
+• Fully managed service that makes it easy to setup a data lake in days
+• Discover, cleanse, transform, and ingest data into your Data Lake
+•out of the box blueprints:s3,rds,aurora etc.,
+• Fine-grained Access Control for your applications (row and column-level)
+• Built on top of AWS Glue
+
+Kinesis Data Analytics (SQL application)
+• Real-time analytics on Kinesis Data Streams & Firehose using SQL
+
+Kinesis Data Analytics for Apache Flink (new name: Amazon managed service for apache flint)
+• Use Flink (Java, Scala or SQL) to process and analyze streaming data, data from KDS or amazon MSK(managed kafka) only 2
+• Run any Apache Flink application on a managed cluster on AWS
+
+Amazon Managed Streaming for Apache Kafka (Amazon MSK)
+• Alternative to Amazon Kinesis, used for data streaming
+• MSK Serverless : Run Apache Kafka on MSK without managing the capacity
+• MSK cluster consists of brokers and producers to produce code and write into topic in broker and this is replicated across various brokers, consumers will consume data from topic.
+
+Big Data Ingestion Pipeline
+*AWS IOT core(for data from IOT devices) streamed by KDS realtime to firehose ingested to s3 ( this is pipeline & there is more to it..)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Machine Learning
+
+• Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text.It can be used to remove PII(personal info) from calls when it converts to text.
+• Amazon Polly is as service that turns text into lifelike speech.First is Lexicons, which allows you to customize the pronunciation of words (e.g., “Amazon EC2” will be “Amazon Elastic Compute Cloud”). The second is Speech Synthesis Markup Language (SSML), which allows you to emphasize words, including breathing sounds, whispering, and more.
+• Amazon Lex: Amazon Lex is a service for building conversational interfaces into any application using voice and text. It provides advanced deep learning functionalities for automatic speech recognition (ASR) and natural language understanding (NLU) to recognize the intent of the user's utterances.
+• Amazon Rekognition is a service offered by Amazon Web Services (AWS) for image and video analysis. It's primarily used for tasks like object and scene detection, facial recognition, facial analysis, and sentiment analysis.
+• Amazon Forecast is a fully managed service that uses machine learning to deliver highly accurate forecasts.
+• Amazon SageMaker is a fully managed machine learning service provided by Amazon Web Services (AWS). It enables developers and data scientists to build, train, and deploy machine learning models quickly and at scale
+• Amazon Personalize is a machine learning service offered by Amazon Web Services (AWS) that facilitates the creation of individualized recommendations for customers using their historical interactions/applicationss.
+• Amazon Kendra is a powerful enterprise search service provided by Amazon Web Services (AWS). It utilizes machine learning algorithms to provide accurate and intelligent search capabilities across various data sources within an organization, including documents, FAQs, manuals, wikis, and more.
+• Amazon Translate is a fully managed neural machine translation service that makes it easy to translate text between languages. It uses deep learning models to provide high-quality, accurate translations for a wide range of language pairs
+• Amazon Comprehend is a natural language processing (NLP) service provided by Amazon Web Services (AWS). It enables developers to analyze text data to gain insights and extract valuable information automatically. Amazon Comprehend offers a range of NLP capabilities
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
